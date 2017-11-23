@@ -1,6 +1,6 @@
 package com.github.bordertech.taskmanager.impl;
 
-import com.github.bordertech.locator.LocatorConfigUtil;
+import com.github.bordertech.locator.LocatorUtil;
 import com.github.bordertech.taskmanager.FutureCache;
 import com.github.bordertech.taskmanager.TaskFuture;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class TaskFutureImpl<T> implements TaskFuture<T> {
 
-	private final static FutureCache CACHE = LocatorConfigUtil.getService(FutureCache.class);
+	private final static FutureCache CACHE = LocatorUtil.getService(FutureCache.class);
 
 	private final String id = UUID.randomUUID().toString();
 

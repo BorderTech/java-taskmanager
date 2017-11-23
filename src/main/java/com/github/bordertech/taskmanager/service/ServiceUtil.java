@@ -1,6 +1,6 @@
 package com.github.bordertech.taskmanager.service;
 
-import com.github.bordertech.locator.LocatorConfigUtil;
+import com.github.bordertech.locator.LocatorUtil;
 import com.github.bordertech.taskmanager.TaskFuture;
 import com.github.bordertech.taskmanager.TaskManager;
 import com.github.bordertech.taskmanager.TaskManagerException;
@@ -20,7 +20,7 @@ import javax.cache.expiry.Duration;
  */
 public class ServiceUtil {
 
-	private final static TaskManager TASK_MANAGER = LocatorConfigUtil.getService(TaskManager.class);
+	private final static TaskManager TASK_MANAGER = LocatorUtil.getService(TaskManager.class);
 
 	private ServiceUtil() {
 	}
