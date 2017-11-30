@@ -26,87 +26,86 @@ public class ServiceUtil {
 	private ServiceUtil() {
 	}
 
-	/**
-	 * @param cacheKey the key for the result holder
-	 * @return the result holder
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 */
-	public static <S, T> ResultHolder<S, T> getResultHolder(final String cacheKey) {
-		return getResultHolder(getDefaultFutureCache(), cacheKey);
-	}
-
-	/**
-	 * Save the result in the cache.
-	 *
-	 * @param cacheKey the key for the result holder
-	 * @param resultHolder the result holder
-	 */
-	public static void setResultHolder(final String cacheKey, final ResultHolder resultHolder) {
-		setResultHolder(getDefaultFutureCache(), cacheKey, resultHolder);
-	}
-
-	/**
-	 * Clear the result cache.
-	 *
-	 * @param cacheKey the key for the result holder
-	 */
-	public static void clearResult(final String cacheKey) {
-		clearResult(getDefaultFutureCache(), cacheKey);
-	}
-
-	/**
-	 * Clear all the results in the cache.
-	 */
-	public static void clearCache() {
-		clearCache(getDefaultFutureCache());
-	}
-
-	/**
-	 * @param cacheKey the key for the result holder
-	 * @param criteria the criteria
-	 * @param action the service action
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result
-	 */
-	public static <S, T> ResultHolder<S, T> handleCachedServiceCall(final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
-		return handleCachedServiceCall(getDefaultFutureCache(), cacheKey, criteria, action);
-	}
-
-	/**
-	 * @param cacheKey the key for the result holder
-	 * @param criteria the criteria
-	 * @param action the service action
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 */
-	public static <S, T> void handleAsyncServiceCall(final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
-		handleAsyncServiceCall(getDefaultFutureCache(), cacheKey, criteria, action);
-	}
-
-	/**
-	 * This is the method to call to check if the future task has completed.
-	 *
-	 * @param cacheKey the key for the result holder
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result
-	 */
-	public static <S, T> ResultHolder<S, T> checkASyncResult(final String cacheKey) {
-		return checkASyncResult(getDefaultFutureCache(), cacheKey);
-	}
-
-	/**
-	 * Check the service status.
-	 *
-	 * @param cacheKey the key for the result holder
-	 * @return the result
-	 */
-	public static ServiceStatus getServiceStatus(final String cacheKey) {
-		return getServiceStatus(getDefaultFutureCache(), cacheKey);
-	}
-
+//	/**
+//	 * @param cacheKey the key for the result holder
+//	 * @return the result holder
+//	 * @param <S> the criteria type
+//	 * @param <T> the service response
+//	 */
+//	public static <S, T> ResultHolder<S, T> getResultHolder(final String cacheKey) {
+//		return getResultHolder(getDefaultFutureCache(), cacheKey);
+//	}
+//
+//	/**
+//	 * Save the result in the cache.
+//	 *
+//	 * @param cacheKey the key for the result holder
+//	 * @param resultHolder the result holder
+//	 */
+//	public static void setResultHolder(final String cacheKey, final ResultHolder resultHolder) {
+//		setResultHolder(getDefaultFutureCache(), cacheKey, resultHolder);
+//	}
+//
+//	/**
+//	 * Clear the result cache.
+//	 *
+//	 * @param cacheKey the key for the result holder
+//	 */
+//	public static void clearResult(final String cacheKey) {
+//		clearResult(getDefaultFutureCache(), cacheKey);
+//	}
+//
+//	/**
+//	 * Clear all the results in the cache.
+//	 */
+//	public static void clearCache() {
+//		clearCache(getDefaultFutureCache());
+//	}
+//
+//	/**
+//	 * @param cacheKey the key for the result holder
+//	 * @param criteria the criteria
+//	 * @param action the service action
+//	 * @param <S> the criteria type
+//	 * @param <T> the service response
+//	 * @return the result
+//	 */
+//	public static <S, T> ResultHolder<S, T> handleCachedServiceCall(final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
+//		return handleCachedServiceCall(getDefaultFutureCache(), cacheKey, criteria, action);
+//	}
+//
+//	/**
+//	 * @param cacheKey the key for the result holder
+//	 * @param criteria the criteria
+//	 * @param action the service action
+//	 * @param <S> the criteria type
+//	 * @param <T> the service response
+//	 */
+//	public static <S, T> void handleAsyncServiceCall(final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
+//		handleAsyncServiceCall(getDefaultFutureCache(), cacheKey, criteria, action);
+//	}
+//
+//	/**
+//	 * This is the method to call to check if the future task has completed.
+//	 *
+//	 * @param cacheKey the key for the result holder
+//	 * @param <S> the criteria type
+//	 * @param <T> the service response
+//	 * @return the result
+//	 */
+//	public static <S, T> ResultHolder<S, T> checkASyncResult(final String cacheKey) {
+//		return checkASyncResult(getDefaultFutureCache(), cacheKey);
+//	}
+//
+//	/**
+//	 * Check the service status.
+//	 *
+//	 * @param cacheKey the key for the result holder
+//	 * @return the result
+//	 */
+//	public static ServiceStatus getServiceStatus(final String cacheKey) {
+//		return getServiceStatus(getDefaultFutureCache(), cacheKey);
+//	}
 	/**
 	 * @param cache the future cache
 	 * @param cacheKey the key for the result holder
@@ -302,15 +301,22 @@ public class ServiceUtil {
 		}
 
 		TaskFuture<ResultHolder> future = cache.get(cacheKey);
+
+		// Future has expired or been removed from the Cache
 		if (future == null) {
-			return null;
+			// Put an exception in the cache
+			ResultHolder result = new ResultHolder(null, new ServiceException("Future is no longer in the cache"));
+			setResultHolder(cache, cacheKey, result);
+			return result;
 		}
 		if (!future.isDone()) {
 			return null;
 		}
 		if (future.isCancelled()) {
-			clearResult(cache, cacheKey);
-			return null;
+			// Put an exception in the cache
+			ResultHolder result = new ResultHolder(null, new ServiceException("Future was cancelled."));
+			setResultHolder(cache, cacheKey, result);
+			return result;
 		}
 		try {
 			return future.get();
@@ -354,7 +360,6 @@ public class ServiceUtil {
 		} catch (InterruptedException | ExecutionException e) {
 			throw new ServiceException("Could not get result from future. " + e.getMessage(), e);
 		}
-
 	}
 
 	/**
@@ -363,8 +368,18 @@ public class ServiceUtil {
 	 *
 	 * @return the cache instance
 	 */
-	public static synchronized Cache<String, TaskFuture> getDefaultFutureCache() {
-		String name = "taskmanager-future-default";
+	public static Cache<String, TaskFuture> getDefaultFutureCache() {
+		return getFutureCache("taskmanager-future-default");
+	}
+
+	/**
+	 * Use a cache to hold a reference to the future so the user context can be serialized. Future Objects are not
+	 * serializable.
+	 *
+	 * @param name the cache name
+	 * @return the cache instance
+	 */
+	public static synchronized Cache<String, TaskFuture> getFutureCache(final String name) {
 		Cache<String, TaskFuture> cache = Caching.getCache(name, String.class, TaskFuture.class);
 		if (cache == null) {
 			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
