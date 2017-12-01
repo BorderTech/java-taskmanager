@@ -6,21 +6,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Holds a result.
+ * Holds an exception when processing the future.
  *
  * @author Jonathan Austin
  * @param <T> the result type
  * @since 1.0.0
  */
-public class DefaultTaskFuture<T> implements TaskFuture<T> {
+public class DefaultExceptionTaskFuture<T> implements TaskFuture<T> {
 
-	private final T result;
+	private final Exception exception;
 
 	/**
-	 * @param result the future's result
+	 * @param exception the future's result
 	 */
-	public DefaultTaskFuture(final T result) {
-		this.result = result;
+	public DefaultExceptionTaskFuture(final Exception exception) {
+		this.exception = exception;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class DefaultTaskFuture<T> implements TaskFuture<T> {
 	 */
 	@Override
 	public T get() throws InterruptedException, ExecutionException {
-		return result;
+		throw new ExecutionException("Error processing future. " + exception.getMessage(), exception);
 	}
 
 	/**

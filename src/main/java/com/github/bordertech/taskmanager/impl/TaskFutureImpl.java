@@ -3,6 +3,7 @@ package com.github.bordertech.taskmanager.impl;
 import com.github.bordertech.locator.LocatorUtil;
 import com.github.bordertech.taskmanager.FutureCache;
 import com.github.bordertech.taskmanager.TaskFuture;
+import com.github.bordertech.taskmanager.TaskManagerException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -80,7 +81,13 @@ public class TaskFutureImpl<T> implements TaskFuture<T> {
 	 * @return the future object from the cache
 	 */
 	protected final Future<T> getFuture() {
-		return CACHE.getFuture(id);
+		Future<T> future = CACHE.getFuture(id);
+		if (future == null) {
+			// Future has expired or been removed from the cache
+			future = new DefaultExceptionTaskFuture<>(new TaskManagerException("Future has been removed from the cache"));
+			CACHE.putFuture(id, future);
+		}
+		return future;
 	}
 
 }
