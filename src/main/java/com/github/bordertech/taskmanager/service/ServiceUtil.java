@@ -213,8 +213,9 @@ public class ServiceUtil {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing
+	 * @throws AsyncException async task is missing or cancelled
 	 */
-	public static synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, TaskFuture> cache, final String cacheKey) {
+	public static synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, TaskFuture> cache, final String cacheKey) throws AsyncException {
 
 		// Check cache and cache key provided
 		if (cache == null) {
@@ -228,19 +229,15 @@ public class ServiceUtil {
 
 		// Future has expired or been removed from the Cache
 		if (future == null) {
-			// Put an exception in the cache
-			ResultHolder result = new ResultHolder(null, new ServiceException("Future is no longer in the cache"));
-			setResultHolder(cache, cacheKey, result);
-			return result;
+			throw new AsyncException("Future is no longer in the cache");
 		}
 		if (!future.isDone()) {
 			return null;
 		}
 		if (future.isCancelled()) {
-			// Put an exception in the cache
-			ResultHolder result = new ResultHolder(null, new ServiceException("Future was cancelled."));
-			setResultHolder(cache, cacheKey, result);
-			return result;
+			// Remove from cache
+			clearResult(cache, cacheKey);
+			throw new AsyncException("Future was cancelled.");
 		}
 		return getResultHolder(cache, cacheKey);
 	}

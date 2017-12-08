@@ -70,12 +70,4 @@ public class ResultHolder<M, T> implements Serializable {
 		return !isException();
 	}
 
-	public boolean isNotFoundException() {
-		return exception instanceof NotFoundException;
-	}
-
-	public boolean isServiceException() {
-		return exception instanceof ServiceException;
-	}
-
 }

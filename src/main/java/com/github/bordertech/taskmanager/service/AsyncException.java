@@ -1,17 +1,17 @@
 package com.github.bordertech.taskmanager.service;
 
 /**
- * Service exception that can be thrown if error handling request.
+ * Future exception has occurred. Maybe missing in cache or cancelled.
  *
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class ServiceException extends Exception {
+public class AsyncException extends Exception {
 
 	/**
 	 * @param message the exception message
 	 */
-	public ServiceException(final String message) {
+	public AsyncException(final String message) {
 		super(message);
 	}
 
@@ -19,7 +19,7 @@ public class ServiceException extends Exception {
 	 * @param message the exception message
 	 * @param original the original exception
 	 */
-	public ServiceException(final String message, final Throwable original) {
+	public AsyncException(final String message, final Throwable original) {
 		super(message, original);
 	}
 
