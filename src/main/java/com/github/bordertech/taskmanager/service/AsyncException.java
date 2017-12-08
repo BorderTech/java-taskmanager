@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmanager.service;
 
 /**
- * Future exception has occurred. Maybe missing in cache or cancelled.
+ * Async exception has occurred. Maybe missing in cache or cancelled.
  *
  * @author Jonathan Austin
  * @since 1.0.0
