@@ -22,8 +22,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.github.bordertech.corpdir</groupId>
-			<artifactId>corpdir-lib-locator</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<artifactId>corpdir-lib-didums</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<!-- Injection interface. JSR 330 -->
