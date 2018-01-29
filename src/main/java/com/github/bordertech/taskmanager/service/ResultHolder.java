@@ -3,10 +3,9 @@ package com.github.bordertech.taskmanager.service;
 import java.io.Serializable;
 
 /**
- * Service result holder to use in the Future.
+ * Result holder for service calls.
  * <p>
- * The result can be an exception or the result. Does not need to serializable as it is held on a Future that is not
- * Serializable.
+ * The result can be an exception or the result.
  * </p>
  *
  * @author Jonathan Austin
@@ -17,20 +16,18 @@ import java.io.Serializable;
 public class ResultHolder<M, T> implements Serializable {
 
 	private final M metaData;
-	private T result;
-	private Exception exception;
-
-	public ResultHolder(final M metaData) {
-		this.metaData = metaData;
-	}
+	private final T result;
+	private final Exception exception;
 
 	public ResultHolder(final M metaData, final T result) {
-		this(metaData);
+		this.metaData = metaData;
 		this.result = result;
+		this.exception = null;
 	}
 
 	public ResultHolder(final M metaData, final Exception exception) {
-		this(metaData);
+		this.metaData = metaData;
+		this.result = null;
 		this.exception = exception;
 	}
 
@@ -38,28 +35,12 @@ public class ResultHolder<M, T> implements Serializable {
 		return metaData;
 	}
 
-	/**
-	 * @return the polling result
-	 */
 	public T getResult() {
 		return result;
 	}
 
-	/**
-	 * @param result the polling result
-	 */
-	public void setResult(final T result) {
-		this.result = result;
-		this.exception = null;
-	}
-
 	public Exception getException() {
 		return exception;
-	}
-
-	public void setException(final Exception exception) {
-		this.exception = exception;
-		this.result = null;
 	}
 
 	public boolean isException() {
@@ -67,7 +48,7 @@ public class ResultHolder<M, T> implements Serializable {
 	}
 
 	public boolean isResult() {
-		return !isException();
+		return exception == null;
 	}
 
 }
