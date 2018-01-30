@@ -68,7 +68,7 @@ public class ServiceUtil {
 	 * @param <T> the service response
 	 * @return the result or null if still processing an async call
 	 */
-	public static <S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) {
+	public static <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) {
 		if (callType == null) {
 			throw new IllegalArgumentException("Call type must be provided.");
 		}
