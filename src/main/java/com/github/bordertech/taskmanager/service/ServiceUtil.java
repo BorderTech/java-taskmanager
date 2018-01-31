@@ -17,15 +17,19 @@ import javax.cache.expiry.Duration;
 /**
  * Helper utility for sync and async service calls.
  *
- * @author jonathan
+ * @author Jonathan Austin
+ * @since 1.0.0
  */
-public class ServiceUtil {
+public final class ServiceUtil {
 
 	private static final TaskManager TASK_MANAGER = Didums.getService(TaskManager.class);
 
-	public static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-result-holder-default";
-
 	private static final String DEFAULT_FUTURE_CACHE_NAME = "taskmanager-future-default";
+
+	/**
+	 * Default service result cache name.
+	 */
+	public static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-result-holder-default";
 
 	private ServiceUtil() {
 	}

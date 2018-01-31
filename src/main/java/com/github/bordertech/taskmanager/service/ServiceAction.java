@@ -10,6 +10,12 @@ package com.github.bordertech.taskmanager.service;
  */
 public interface ServiceAction<S, T> {
 
+	/**
+	 * Invoke service call.
+	 *
+	 * @param criteria the service criteria
+	 * @return the service response
+	 */
 	T service(final S criteria);
 
 }

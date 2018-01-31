@@ -14,8 +14,8 @@ import javax.inject.Singleton;
 /**
  * Uses a cache to hold the future allowing the cache key reference to be serializable.
  *
- * @author Jonathan Austin
  * @param <T> the future get type
+ * @author Jonathan Austin
  * @since 1.0.0
  */
 @Singleton
@@ -34,7 +34,7 @@ public class FutureCacheImpl<T> implements FutureCache<T> {
 	}
 
 	@Override
-	public void putFuture(String key, Future<T> future) {
+	public void putFuture(final String key, final Future<T> future) {
 		getCache().put(key, future);
 	}
 

@@ -13,7 +13,7 @@ import javax.servlet.ServletContextListener;
  */
 public class TaskContextListener implements ServletContextListener {
 
-	private final static TaskManager TASK_MANAGER = Didums.getService(TaskManager.class);
+	private static final TaskManager TASK_MANAGER = Didums.getService(TaskManager.class);
 
 	/**
 	 * {@inheritDoc}

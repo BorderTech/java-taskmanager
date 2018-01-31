@@ -8,9 +8,9 @@ import java.io.Serializable;
  * The result can be an exception or the result.
  * </p>
  *
- * @author Jonathan Austin
  * @param <M> the meta type
  * @param <T> the result type
+ * @author Jonathan Austin
  * @since 1.0.0
  */
 public class ResultHolder<M, T> implements Serializable {

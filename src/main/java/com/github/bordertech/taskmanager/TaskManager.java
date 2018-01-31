@@ -6,6 +6,7 @@ import java.util.concurrent.RejectedExecutionException;
  * Task Manager interface.
  *
  * @author Jonathan Austin
+ * @since 1.0.0
  */
 public interface TaskManager {
 

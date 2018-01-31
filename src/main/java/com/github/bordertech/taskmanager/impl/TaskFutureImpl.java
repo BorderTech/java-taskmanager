@@ -13,13 +13,13 @@ import java.util.concurrent.TimeoutException;
 /**
  * Uses a cache to hold the future allowing the cache key reference to be serializable.
  *
- * @author Jonathan Austin
  * @param <T> the future get type
+ * @author Jonathan Austin
  * @since 1.0.0
  */
 public class TaskFutureImpl<T> implements TaskFuture<T> {
 
-	private final static FutureCache CACHE = Didums.getService(FutureCache.class);
+	private static final FutureCache CACHE = Didums.getService(FutureCache.class);
 
 	private final String id = UUID.randomUUID().toString();
 

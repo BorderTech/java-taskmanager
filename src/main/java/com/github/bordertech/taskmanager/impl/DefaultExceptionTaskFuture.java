@@ -8,8 +8,8 @@ import java.util.concurrent.TimeoutException;
 /**
  * Holds an exception when processing the future.
  *
- * @author Jonathan Austin
  * @param <T> the result type
+ * @author Jonathan Austin
  * @since 1.0.0
  */
 public class DefaultExceptionTaskFuture<T> implements TaskFuture<T> {

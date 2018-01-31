@@ -1,8 +1,10 @@
 package com.github.bordertech.taskmanager;
 
 /**
+ * Task Manager Exception has occurred.
  *
- * @author jonathan
+ * @author Jonathan Austin
+ * @since 1.0.0
  */
 public class TaskManagerException extends RuntimeException {
 
