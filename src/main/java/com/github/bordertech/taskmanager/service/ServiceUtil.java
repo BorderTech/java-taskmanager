@@ -31,6 +31,9 @@ public final class ServiceUtil {
 	 */
 	public static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-result-holder-default";
 
+	/**
+	 * Private constructor.
+	 */
 	private ServiceUtil() {
 	}
 
@@ -72,7 +75,8 @@ public final class ServiceUtil {
 	 * @param <T> the service response
 	 * @return the result or null if still processing an async call
 	 */
-	public static <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) {
+	public static <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) {
 		if (callType == null) {
 			throw new IllegalArgumentException("Call type must be provided.");
 		}
@@ -101,7 +105,8 @@ public final class ServiceUtil {
 	 * @param <T> the service response
 	 * @return the result
 	 */
-	public static <S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
+	public static <S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
 
 		// Check cache and cache key provided
 		if (cache == null) {
@@ -135,7 +140,8 @@ public final class ServiceUtil {
 	 * @param <T> the service response
 	 * @return the result or null if still processing
 	 */
-	public static <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
+	public static <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
 
 		// Check cache and cache key provided
 		if (cache == null) {
@@ -305,6 +311,9 @@ public final class ServiceUtil {
 		return cache;
 	}
 
+	/**
+	 * @param key the future key to remove from the future cache
+	 */
 	private static void clearFutureCache(final String key) {
 		TaskFuture future = getFutureCache().get(key);
 		if (future != null) {
@@ -315,23 +324,39 @@ public final class ServiceUtil {
 		}
 	}
 
+	/**
+	 * Helper method to build the future cache key.
+	 *
+	 * @param cacheName the cache name
+	 * @param cacheKey the cache key
+	 * @return the future cache key
+	 */
 	private static String getFutureKey(final String cacheName, final String cacheKey) {
 		return cacheName + "-" + cacheKey;
 	}
 
 	/**
 	 * Used to hold the service result with the Future processing.
+	 *
+	 * @param <M> the meta data type
+	 * @param <T> the result type
 	 */
-	private static class FutureServiceResult<M, T> implements Serializable {
+	private static final class FutureServiceResult<M, T> implements Serializable {
 
 		private final M metaData;
 		private T result;
 		private Exception exception;
 
-		public FutureServiceResult(final M metaData) {
+		/**
+		 * @param metaData the meta data
+		 */
+		private FutureServiceResult(final M metaData) {
 			this.metaData = metaData;
 		}
 
+		/**
+		 * @return the meta data
+		 */
 		public M getMetaData() {
 			return metaData;
 		}
@@ -344,26 +369,38 @@ public final class ServiceUtil {
 		}
 
 		/**
-		 * @param result the polling result
+		 * @param result the result
 		 */
 		public void setResult(final T result) {
 			this.result = result;
 			this.exception = null;
 		}
 
+		/**
+		 * @return the exception or null if has result
+		 */
 		public Exception getException() {
 			return exception;
 		}
 
+		/**
+		 * @param exception the exception when calling the service
+		 */
 		public void setException(final Exception exception) {
 			this.exception = exception;
 			this.result = null;
 		}
 
+		/**
+		 * @return true if holding an exception
+		 */
 		public boolean isException() {
 			return exception != null;
 		}
 
+		/**
+		 * @return true if holding a result
+		 */
 		public boolean isResult() {
 			return !isException();
 		}

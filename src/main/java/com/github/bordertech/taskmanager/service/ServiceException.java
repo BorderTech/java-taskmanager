@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmanager.service;
 
 /**
- * Service exception that can be thrown if error handling request.
+ * Service exception that can be thrown while processing a service request.
  *
  * @author Jonathan Austin
  * @since 1.0.0

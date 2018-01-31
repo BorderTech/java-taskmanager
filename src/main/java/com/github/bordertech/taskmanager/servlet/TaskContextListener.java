@@ -7,6 +7,21 @@ import javax.servlet.ServletContextListener;
 
 /**
  * ContextListener to shutdown the task manager (release threads).
+ * <p>
+ * To include the context listener, declare the listener in the application's web.xml:-
+ * </p>
+ * <pre>
+ * &lt;web-app ...&gt;
+ *   &lt;listener&gt;
+ *     &lt;listener-class&gt;>
+ *           com.github.bordertech.taskmanager.servlet.TaskContextListener
+ *     &lt;/listener-class&gt;
+ *   &lt;/listener&gt;
+ * &lt;/web-app&gt;
+ * </pre>
+ * <p>
+ * For Servlet container 3.x, you can annotate the listener with @WebListener, no need to declare in web.xml.
+ * </p>
  *
  * @author Jonathan Austin
  * @since 1.0.0

@@ -19,7 +19,7 @@ import javax.inject.Singleton;
  * @since 1.0.0
  */
 @Singleton
-public class FutureCacheImpl<T> implements FutureCache<T> {
+public class DefaultFutureCache<T> implements FutureCache<T> {
 
 	private static final String CACHE_NAME = "wc-future-task";
 
