@@ -21,7 +21,7 @@ import javax.inject.Singleton;
 @Singleton
 public class DefaultFutureCache<T> implements FutureCache<T> {
 
-	private static final String CACHE_NAME = "wc-future-task";
+	private static final String CACHE_NAME = "bordertech-tm-future-task";
 
 	@Override
 	public Future<T> getFuture(final String key) {
