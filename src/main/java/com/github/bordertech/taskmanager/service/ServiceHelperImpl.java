@@ -14,6 +14,7 @@ import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
+import javax.inject.Singleton;
 
 /**
  * Helper utility for sync and async service calls.
@@ -27,7 +28,8 @@ import javax.cache.expiry.Duration;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public final class ServiceUtil {
+@Singleton
+public final class ServiceHelperImpl implements ServiceHelper {
 
 	private static final TaskManager TASK_MANAGER = Didums.getService(TaskManager.class);
 
@@ -41,22 +43,8 @@ public final class ServiceUtil {
 
 	private static final Duration DEFAULT_RESULT_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_RESULT_HOLDER_DURATION_SECONDS);
 
-	/**
-	 * Private constructor.
-	 */
-	private ServiceUtil() {
-	}
-
-	/**
-	 * Handle a service call.
-	 *
-	 * @param criteria the criteria
-	 * @param action the service action
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result
-	 */
-	public static <S, T> ResultHolder<S, T> handleServiceCall(final S criteria, final ServiceAction<S, T> action) {
+	@Override
+	public <S, T> ResultHolder<S, T> handleServiceCall(final S criteria, final ServiceAction<S, T> action) {
 		// Check action provided
 		if (action == null) {
 			throw new IllegalArgumentException("No service action has been provided. ");
@@ -72,20 +60,8 @@ public final class ServiceUtil {
 		}
 	}
 
-	/**
-	 *
-	 * Handle a cached service call.
-	 *
-	 * @param cache the result holder cache
-	 * @param cacheKey the key for the result holder
-	 * @param criteria the criteria
-	 * @param action the service action
-	 * @param callType the call type
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result or null if still processing an async call
-	 */
-	public static <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+	@Override
+	public <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) {
 		if (callType == null) {
 			throw new IllegalArgumentException("Call type must be provided.");
@@ -103,19 +79,8 @@ public final class ServiceUtil {
 		}
 	}
 
-	/**
-	 *
-	 * Handle a cached service call.
-	 *
-	 * @param cache the result holder cache
-	 * @param cacheKey the key for the result holder
-	 * @param criteria the criteria
-	 * @param action the service action
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result
-	 */
-	public static <S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache,
+	@Override
+	public <S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
 
 		// Check cache and cache key provided
@@ -139,18 +104,8 @@ public final class ServiceUtil {
 		return result;
 	}
 
-	/**
-	 * Handle an async service call.
-	 *
-	 * @param cache the result holder cache
-	 * @param cacheKey the key for the result holder
-	 * @param criteria the criteria
-	 * @param action the service action
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result or null if still processing
-	 */
-	public static <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+	@Override
+	public <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
 
 		// Check cache and cache key provided
@@ -203,19 +158,8 @@ public final class ServiceUtil {
 		}
 	}
 
-	/**
-	 * This is the method checks if the processing task has completed.
-	 * <p>
-	 * If the future is done, then it will transition the result from the processing cache into the result holder cache.
-	 * </p>
-	 *
-	 * @param cache the result holder cache
-	 * @param cacheKey the key for the result holder
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result or null if still processing
-	 */
-	public static synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache, final String cacheKey) {
+	@Override
+	public synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache, final String cacheKey) {
 
 		// Check cache and cache key provided
 		if (cache == null) {
@@ -272,33 +216,18 @@ public final class ServiceUtil {
 		}
 	}
 
-	/**
-	 * Provide a default result holder cache with the default duration.
-	 *
-	 * @return the default result holder cache instance
-	 */
-	public static Cache<String, ResultHolder> getDefaultResultHolderCache() {
+	@Override
+	public Cache<String, ResultHolder> getDefaultResultHolderCache() {
 		return getResultHolderCache(DEFAULT_RESULT_CACHE_NAME, DEFAULT_RESULT_DURATION);
 	}
 
-	/**
-	 * Provide a result holder cache with an assigned cache name with default duration.
-	 *
-	 * @param name the cache name
-	 * @return the cache instance
-	 */
-	public static synchronized Cache<String, ResultHolder> getResultHolderCache(final String name) {
+	@Override
+	public synchronized Cache<String, ResultHolder> getResultHolderCache(final String name) {
 		return getResultHolderCache(name, DEFAULT_RESULT_DURATION);
 	}
 
-	/**
-	 * Provide a result holder cache with an assigned cache name and duration.
-	 *
-	 * @param name the cache name
-	 * @param duration the time to live for cached items
-	 * @return the cache instance
-	 */
-	public static synchronized Cache<String, ResultHolder> getResultHolderCache(final String name, final Duration duration) {
+	@Override
+	public synchronized Cache<String, ResultHolder> getResultHolderCache(final String name, final Duration duration) {
 		Cache<String, ResultHolder> cache = Caching.getCache(name, String.class, ResultHolder.class);
 		if (cache == null) {
 			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
@@ -308,7 +237,6 @@ public final class ServiceUtil {
 			cache = mgr.createCache(name, config);
 		}
 		return cache;
-
 	}
 
 	/**
@@ -320,7 +248,7 @@ public final class ServiceUtil {
 	 *
 	 * @return the processing cache instance
 	 */
-	private static synchronized Cache<String, TaskFuture> getProcessingCache() {
+	protected synchronized Cache<String, TaskFuture> getProcessingCache() {
 		Cache<String, TaskFuture> cache = Caching.getCache(DEFAULT_PROCESSING_CACHE_NAME, String.class, TaskFuture.class);
 		if (cache == null) {
 			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
@@ -335,7 +263,7 @@ public final class ServiceUtil {
 	/**
 	 * @param key the cache key to remove from the processing cache
 	 */
-	private static void clearProcessingCache(final String key) {
+	protected void clearProcessingCache(final String key) {
 		TaskFuture future = getProcessingCache().get(key);
 		if (future != null) {
 			if (!future.isDone() && !future.isCancelled()) {
@@ -352,7 +280,7 @@ public final class ServiceUtil {
 	 * @param cacheKey the cache key
 	 * @return the processing cache key
 	 */
-	private static String getProcessingKey(final String cacheName, final String cacheKey) {
+	protected String getProcessingKey(final String cacheName, final String cacheKey) {
 		return cacheName + "-" + cacheKey;
 	}
 
@@ -362,7 +290,7 @@ public final class ServiceUtil {
 	 * @param <M> the meta data type
 	 * @param <T> the result type
 	 */
-	private static final class ProcessingServiceResult<M, T> implements Serializable {
+	public static final class ProcessingServiceResult<M, T> implements Serializable {
 
 		private final M metaData;
 		private T result;
@@ -371,7 +299,7 @@ public final class ServiceUtil {
 		/**
 		 * @param metaData the meta data
 		 */
-		private ProcessingServiceResult(final M metaData) {
+		public ProcessingServiceResult(final M metaData) {
 			this.metaData = metaData;
 		}
 
