@@ -1,8 +1,8 @@
 package com.github.bordertech.taskmanager.impl;
 
 import com.github.bordertech.didums.Didums;
-import com.github.bordertech.taskmanager.FutureCache;
 import com.github.bordertech.taskmanager.TaskFuture;
+import com.github.bordertech.taskmanager.TaskFutureWrapperCache;
 import com.github.bordertech.taskmanager.TaskManagerException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -11,22 +11,22 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Uses a cache to hold the future allowing the cache key reference to be serializable.
+ * Uses a cache to wrap the future allowing the cache key reference to be serializable.
  *
  * @param <T> the future get type
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class TaskFutureImpl<T> implements TaskFuture<T> {
+public class TaskFutureWrapper<T> implements TaskFuture<T> {
 
-	private static final FutureCache CACHE = Didums.getService(FutureCache.class);
+	private static final TaskFutureWrapperCache CACHE = Didums.getService(TaskFutureWrapperCache.class);
 
 	private final String id = UUID.randomUUID().toString();
 
 	/**
 	 * @param future the backing future
 	 */
-	public TaskFutureImpl(final Future<T> future) {
+	public TaskFutureWrapper(final Future<T> future) {
 		setFuture(future);
 	}
 
@@ -84,7 +84,7 @@ public class TaskFutureImpl<T> implements TaskFuture<T> {
 		Future<T> future = CACHE.getFuture(id);
 		if (future == null) {
 			// Future has expired or been removed from the cache
-			future = new DefaultExceptionTaskFuture<>(new TaskManagerException("Future has been removed from the cache"));
+			future = new TaskFutureResult(new TaskManagerException("Future has been removed from the cache"));
 			CACHE.putFuture(id, future);
 		}
 		return future;

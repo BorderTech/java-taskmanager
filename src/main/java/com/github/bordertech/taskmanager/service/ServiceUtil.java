@@ -1,5 +1,6 @@
 package com.github.bordertech.taskmanager.service;
 
+import com.github.bordertech.config.Config;
 import com.github.bordertech.didums.Didums;
 import com.github.bordertech.taskmanager.TaskFuture;
 import com.github.bordertech.taskmanager.TaskManager;
@@ -16,6 +17,12 @@ import javax.cache.expiry.Duration;
 
 /**
  * Helper utility for sync and async service calls.
+ * <p>
+ * Service results (successful or exception) are stored as ResultHolders in the named cache.
+ * </p>
+ * <p>
+ * This helper provides a default cache or projects can create caches with assigned names.
+ * </p>
  *
  * @author Jonathan Austin
  * @since 1.0.0
@@ -24,12 +31,15 @@ public final class ServiceUtil {
 
 	private static final TaskManager TASK_MANAGER = Didums.getService(TaskManager.class);
 
-	private static final String DEFAULT_FUTURE_CACHE_NAME = "taskmanager-future-default";
+	private static final String DEFAULT_PROCESSING_CACHE_NAME = "taskmanager-processing-default";
 
-	/**
-	 * Default service result cache name.
-	 */
-	public static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-result-holder-default";
+	private static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-result-holder-default";
+
+	private static final Long DEFAULT_PROCESSING_DURATION_SECONDS = Config.getInstance().getLong("bordertech.taskmanager.service.processing.cache.duration", Long.valueOf("300"));
+
+	private static final Long DEFAULT_RESULT_HOLDER_DURATION_SECONDS = Config.getInstance().getLong("bordertech.taskmanager.service.resultholder.cache.duration", Long.valueOf("1800"));
+
+	private static final Duration DEFAULT_RESULT_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_RESULT_HOLDER_DURATION_SECONDS);
 
 	/**
 	 * Private constructor.
@@ -66,7 +76,7 @@ public final class ServiceUtil {
 	 *
 	 * Handle a cached service call.
 	 *
-	 * @param cache the future cache
+	 * @param cache the result holder cache
 	 * @param cacheKey the key for the result holder
 	 * @param criteria the criteria
 	 * @param action the service action
@@ -97,7 +107,7 @@ public final class ServiceUtil {
 	 *
 	 * Handle a cached service call.
 	 *
-	 * @param cache the future cache
+	 * @param cache the result holder cache
 	 * @param cacheKey the key for the result holder
 	 * @param criteria the criteria
 	 * @param action the service action
@@ -132,7 +142,7 @@ public final class ServiceUtil {
 	/**
 	 * Handle an async service call.
 	 *
-	 * @param cache the future cache
+	 * @param cache the result holder cache
 	 * @param cacheKey the key for the result holder
 	 * @param criteria the criteria
 	 * @param action the service action
@@ -155,22 +165,22 @@ public final class ServiceUtil {
 			throw new IllegalArgumentException("No service action has been provided. ");
 		}
 
-		// Maybe already processing or in the result cache
+		// Maybe already in the result cache
 		ResultHolder cached = cache.get(cacheKey);
 		if (cached != null) {
 			return cached;
 		}
 
 		// Check already processing
-		String futureKey = getFutureKey(cache.getName(), cacheKey);
-		if (getFutureCache().get(futureKey) != null) {
+		String processingKey = getProcessingKey(cache.getName(), cacheKey);
+		if (getProcessingCache().get(processingKey) != null) {
 			cached = checkASyncResult(cache, cacheKey);
 			// Null for still processing or has result
 			return cached;
 		}
 
 		// Setup the bean to hold the service result
-		final FutureServiceResult<S, T> result = new FutureServiceResult(cacheKey);
+		final ProcessingServiceResult<S, T> result = new ProcessingServiceResult(cacheKey);
 		Runnable task = new Runnable() {
 			@Override
 			public void run() {
@@ -186,7 +196,7 @@ public final class ServiceUtil {
 		try {
 			TaskFuture future = TASK_MANAGER.submit(task, result);
 			// Cache the future
-			getFutureCache().put(futureKey, future);
+			getProcessingCache().put(processingKey, future);
 			return null;
 		} catch (Exception e) {
 			throw new TaskManagerException("Could not start thread to process task action. " + e.getMessage());
@@ -194,12 +204,12 @@ public final class ServiceUtil {
 	}
 
 	/**
-	 * This is the method to call to check if the future task has completed.
+	 * This is the method checks if the processing task has completed.
 	 * <p>
-	 * If the future is done, then it will transition the result from the future cache into the result holder cache.
+	 * If the future is done, then it will transition the result from the processing cache into the result holder cache.
 	 * </p>
 	 *
-	 * @param cache the future cache
+	 * @param cache the result holder cache
 	 * @param cacheKey the key for the result holder
 	 * @param <S> the criteria type
 	 * @param <T> the service response
@@ -215,10 +225,10 @@ public final class ServiceUtil {
 			throw new IllegalArgumentException("A cache key must be provided for async processing. ");
 		}
 
-		String futureKey = getFutureKey(cache.getName(), cacheKey);
+		String processingKey = getProcessingKey(cache.getName(), cacheKey);
 
 		// Get the future
-		TaskFuture<FutureServiceResult> future = getFutureCache().get(futureKey);
+		TaskFuture<ProcessingServiceResult> future = getProcessingCache().get(processingKey);
 
 		// Future has expired or been removed from the Cache
 		if (future == null) {
@@ -227,7 +237,7 @@ public final class ServiceUtil {
 			if (cached != null) {
 				return cached;
 			}
-			throw new ServiceException("Future is no longer in the cache");
+			throw new ServiceException("Future is no longer in the processing cache");
 		}
 
 		// Still processing
@@ -238,16 +248,16 @@ public final class ServiceUtil {
 		// Future was cancelled
 		if (future.isCancelled()) {
 			// Remove from cache
-			clearFutureCache(futureKey);
+			clearProcessingCache(processingKey);
 			throw new ServiceException("Future was cancelled.");
 		}
 
-		// Remove from the future cache
-		getFutureCache().remove(futureKey);
+		// Remove from the processing cache
+		getProcessingCache().remove(processingKey);
 
 		// Done, so Extract the result
 		try {
-			FutureServiceResult serviceResult = future.get();
+			ProcessingServiceResult serviceResult = future.get();
 			ResultHolder result;
 			if (serviceResult.isException()) {
 				result = new ResultHolder(serviceResult.getMetaData(), serviceResult.getException());
@@ -263,30 +273,38 @@ public final class ServiceUtil {
 	}
 
 	/**
-	 * Use a cache to hold a reference to the future so the user context can be serialized. Future Objects are not
-	 * serializable.
+	 * Provide a default result holder cache with the default duration.
 	 *
-	 * @return the cache instance
+	 * @return the default result holder cache instance
 	 */
 	public static Cache<String, ResultHolder> getDefaultResultHolderCache() {
-		return getResultHolderCache(DEFAULT_RESULT_CACHE_NAME);
+		return getResultHolderCache(DEFAULT_RESULT_CACHE_NAME, DEFAULT_RESULT_DURATION);
 	}
 
 	/**
-	 * Use a cache to hold a reference to the future so the user context can be serialized. Future Objects are not
-	 * serializable.
+	 * Provide a result holder cache with an assigned cache name with default duration.
 	 *
 	 * @param name the cache name
 	 * @return the cache instance
 	 */
 	public static synchronized Cache<String, ResultHolder> getResultHolderCache(final String name) {
-		Cache<String, ResultHolder> cache = Caching.getCache(name, String.class, ResultHolder.class
-		);
+		return getResultHolderCache(name, DEFAULT_RESULT_DURATION);
+	}
+
+	/**
+	 * Provide a result holder cache with an assigned cache name and duration.
+	 *
+	 * @param name the cache name
+	 * @param duration the time to live for cached items
+	 * @return the cache instance
+	 */
+	public static synchronized Cache<String, ResultHolder> getResultHolderCache(final String name, final Duration duration) {
+		Cache<String, ResultHolder> cache = Caching.getCache(name, String.class, ResultHolder.class);
 		if (cache == null) {
 			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
 			MutableConfiguration<String, ResultHolder> config = new MutableConfiguration<>();
 			config.setTypes(String.class, ResultHolder.class);
-			config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.MINUTES, 30)));
+			config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(duration));
 			cache = mgr.createCache(name, config);
 		}
 		return cache;
@@ -294,54 +312,57 @@ public final class ServiceUtil {
 	}
 
 	/**
-	 * Use a cache to hold a reference to the future so the user context can be serialized. Future Objects are not
-	 * serializable.
+	 * Use a cache to hold a reference to the services currently being processed.
+	 * <p>
+	 * Note - Depending on the TaskFuture implementation, the TaskFuture internally maybe caching the future as well but
+	 * this utility should not care or be affected by the internal task cache.
+	 * </p>
 	 *
-	 * @return the cache instance
+	 * @return the processing cache instance
 	 */
-	private static synchronized Cache<String, TaskFuture> getFutureCache() {
-		Cache<String, TaskFuture> cache = Caching.getCache(DEFAULT_FUTURE_CACHE_NAME, String.class, TaskFuture.class);
+	private static synchronized Cache<String, TaskFuture> getProcessingCache() {
+		Cache<String, TaskFuture> cache = Caching.getCache(DEFAULT_PROCESSING_CACHE_NAME, String.class, TaskFuture.class);
 		if (cache == null) {
 			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
 			MutableConfiguration<String, TaskFuture> config = new MutableConfiguration<>();
 			config.setTypes(String.class, TaskFuture.class);
-			config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.MINUTES, 5)));
-			cache = mgr.createCache(DEFAULT_FUTURE_CACHE_NAME, config);
+			config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.SECONDS, DEFAULT_PROCESSING_DURATION_SECONDS)));
+			cache = mgr.createCache(DEFAULT_PROCESSING_CACHE_NAME, config);
 		}
 		return cache;
 	}
 
 	/**
-	 * @param key the future key to remove from the future cache
+	 * @param key the cache key to remove from the processing cache
 	 */
-	private static void clearFutureCache(final String key) {
-		TaskFuture future = getFutureCache().get(key);
+	private static void clearProcessingCache(final String key) {
+		TaskFuture future = getProcessingCache().get(key);
 		if (future != null) {
 			if (!future.isDone() && !future.isCancelled()) {
 				future.cancel(true);
 			}
-			getFutureCache().remove(key);
+			getProcessingCache().remove(key);
 		}
 	}
 
 	/**
-	 * Helper method to build the future cache key.
+	 * Helper method to build the processing cache key.
 	 *
 	 * @param cacheName the cache name
 	 * @param cacheKey the cache key
-	 * @return the future cache key
+	 * @return the processing cache key
 	 */
-	private static String getFutureKey(final String cacheName, final String cacheKey) {
+	private static String getProcessingKey(final String cacheName, final String cacheKey) {
 		return cacheName + "-" + cacheKey;
 	}
 
 	/**
-	 * Used to hold the service result with the Future processing.
+	 * Used to hold the service result with the ASync processing.
 	 *
 	 * @param <M> the meta data type
 	 * @param <T> the result type
 	 */
-	private static final class FutureServiceResult<M, T> implements Serializable {
+	private static final class ProcessingServiceResult<M, T> implements Serializable {
 
 		private final M metaData;
 		private T result;
@@ -350,7 +371,7 @@ public final class ServiceUtil {
 		/**
 		 * @param metaData the meta data
 		 */
-		private FutureServiceResult(final M metaData) {
+		private ProcessingServiceResult(final M metaData) {
 			this.metaData = metaData;
 		}
 

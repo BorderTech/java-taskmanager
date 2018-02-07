@@ -33,7 +33,7 @@ public class TaskManagerExecutorServiceImpl implements TaskManager {
 	public <T> TaskFuture<T> submit(final Runnable task, final T result) {
 		Future<T> future = POOL.submit(task, result);
 
-		return new TaskFutureImpl<>(future);
+		return new TaskFutureWrapper<>(future);
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmanager.service;
 
 /**
- * The invoke a service interface.
+ * Invoke a service interface.
  *
  * @param <S> the criteria type
  * @param <T> the response type
