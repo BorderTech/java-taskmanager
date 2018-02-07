@@ -5,14 +5,11 @@ import com.github.bordertech.didums.Didums;
 import com.github.bordertech.taskmanager.TaskFuture;
 import com.github.bordertech.taskmanager.TaskManager;
 import com.github.bordertech.taskmanager.TaskManagerException;
+import com.github.bordertech.taskmanager.cache.CacheHelper;
 import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import javax.cache.Cache;
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-import javax.cache.configuration.MutableConfiguration;
-import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
 import javax.inject.Singleton;
 
@@ -32,16 +29,15 @@ import javax.inject.Singleton;
 public final class ServiceHelperImpl implements ServiceHelper {
 
 	private static final TaskManager TASK_MANAGER = Didums.getService(TaskManager.class);
+	private static final CacheHelper CACHE_HELPER = Didums.getService(CacheHelper.class);
+
+	private static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-resultholder-default";
+	private static final Long DEFAULT_RESULT_HOLDER_DURATION_SECONDS = Config.getInstance().getLong("bordertech.taskmanager.service.resultholder.cache.duration", Long.valueOf("1800"));
+	private static final Duration DEFAULT_RESULT_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_RESULT_HOLDER_DURATION_SECONDS);
 
 	private static final String DEFAULT_PROCESSING_CACHE_NAME = "taskmanager-processing-default";
-
-	private static final String DEFAULT_RESULT_CACHE_NAME = "taskmanager-result-holder-default";
-
 	private static final Long DEFAULT_PROCESSING_DURATION_SECONDS = Config.getInstance().getLong("bordertech.taskmanager.service.processing.cache.duration", Long.valueOf("300"));
-
-	private static final Long DEFAULT_RESULT_HOLDER_DURATION_SECONDS = Config.getInstance().getLong("bordertech.taskmanager.service.resultholder.cache.duration", Long.valueOf("1800"));
-
-	private static final Duration DEFAULT_RESULT_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_RESULT_HOLDER_DURATION_SECONDS);
+	private static final Duration DEFAULT_PROCESSING_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_PROCESSING_DURATION_SECONDS);
 
 	@Override
 	public <S, T> ResultHolder<S, T> handleServiceCall(final S criteria, final ServiceAction<S, T> action) {
@@ -159,7 +155,8 @@ public final class ServiceHelperImpl implements ServiceHelper {
 	}
 
 	@Override
-	public synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache, final String cacheKey) {
+	public synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache,
+			final String cacheKey) {
 
 		// Check cache and cache key provided
 		if (cache == null) {
@@ -227,16 +224,8 @@ public final class ServiceHelperImpl implements ServiceHelper {
 	}
 
 	@Override
-	public synchronized Cache<String, ResultHolder> getResultHolderCache(final String name, final Duration duration) {
-		Cache<String, ResultHolder> cache = Caching.getCache(name, String.class, ResultHolder.class);
-		if (cache == null) {
-			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
-			MutableConfiguration<String, ResultHolder> config = new MutableConfiguration<>();
-			config.setTypes(String.class, ResultHolder.class);
-			config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(duration));
-			cache = mgr.createCache(name, config);
-		}
-		return cache;
+	public Cache<String, ResultHolder> getResultHolderCache(final String name, final Duration duration) {
+		return CACHE_HELPER.getOrCreateCache(name, String.class, ResultHolder.class, duration);
 	}
 
 	/**
@@ -248,16 +237,8 @@ public final class ServiceHelperImpl implements ServiceHelper {
 	 *
 	 * @return the processing cache instance
 	 */
-	protected synchronized Cache<String, TaskFuture> getProcessingCache() {
-		Cache<String, TaskFuture> cache = Caching.getCache(DEFAULT_PROCESSING_CACHE_NAME, String.class, TaskFuture.class);
-		if (cache == null) {
-			final CacheManager mgr = Caching.getCachingProvider().getCacheManager();
-			MutableConfiguration<String, TaskFuture> config = new MutableConfiguration<>();
-			config.setTypes(String.class, TaskFuture.class);
-			config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.SECONDS, DEFAULT_PROCESSING_DURATION_SECONDS)));
-			cache = mgr.createCache(DEFAULT_PROCESSING_CACHE_NAME, config);
-		}
-		return cache;
+	protected Cache<String, TaskFuture> getProcessingCache() {
+		return CACHE_HELPER.getOrCreateCache(DEFAULT_PROCESSING_CACHE_NAME, String.class, TaskFuture.class, DEFAULT_PROCESSING_DURATION);
 	}
 
 	/**

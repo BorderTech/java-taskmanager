@@ -59,7 +59,8 @@ public interface ServiceHelper {
 	 * @param <T> the service response
 	 * @return the result or null if still processing
 	 */
-	<S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action);
+	<S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
+			final S criteria, final ServiceAction<S, T> action);
 
 	/**
 	 *
@@ -73,7 +74,8 @@ public interface ServiceHelper {
 	 * @param <T> the service response
 	 * @return the result
 	 */
-	<S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action);
+	<S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
+			final S criteria, final ServiceAction<S, T> action);
 
 	/**
 	 * Handle a service call.
@@ -99,6 +101,7 @@ public interface ServiceHelper {
 	 * @param <T> the service response
 	 * @return the result or null if still processing an async call
 	 */
-	<S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType);
+	<S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey,
+			final S criteria, final ServiceAction<S, T> action, final CallType callType);
 
 }
