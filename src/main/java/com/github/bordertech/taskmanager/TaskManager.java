@@ -3,7 +3,19 @@ package com.github.bordertech.taskmanager;
 import java.util.concurrent.RejectedExecutionException;
 
 /**
- * Task Manager interface.
+ * TaskManager helps projects run ASYNC tasks.
+ *
+ * <p>
+ * TaskManager allows a Runnable task to be submitted for execution and returns a Future representing that task. The
+ * Future's get method will return the given result upon successful completion.
+ * </p>
+ * <p>
+ * As Web applications require a Future implementation that can be serializable, the TaskManager has a custom interface
+ * TaskFuture that implements both Future and Serializable. It does not make sense for a Future to be Serializable as it
+ * is running on a specific thread on a particular server. To allow a Web Application to keep a reference to the Future,
+ * the default implementation of TaskFuture (ie TaskFutureWrapper) wraps the future by putting the Future on a cache and
+ * holding onto the cache key that is serializable.
+ * </p>
  *
  * @author Jonathan Austin
  * @since 1.0.0
