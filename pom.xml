@@ -19,6 +19,29 @@
 		<bt.qa.skip>false</bt.qa.skip>
 	</properties>
 
+	<description>
+		Task Master allows a Runnable task to be submitted for execution and returns a Future representing that task.
+	</description>
+
+	<url>https://github.com/bordertech/java-taskmaster</url>
+
+	<scm>
+		<url>https://github.com/bordertech/java-taskmaster</url>
+		<connection>scm:git:https://github.com/bordertech/java-taskmaster.git</connection>
+		<developerConnection>scm:git:https://github.com/bordertech/java-taskmaster.git</developerConnection>
+		<tag>java-taskmaster-1.0.0</tag>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/bordertech/java-taskmaster/issues</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>CircleCI</system>
+		<url>https://circleci.com/gh/bordertech/java-taskmaster/</url>
+	</ciManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.github.bordertech.didums</groupId>
