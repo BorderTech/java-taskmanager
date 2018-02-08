@@ -1,7 +1,7 @@
-package com.github.bordertech.taskmanager.impl;
+package com.github.bordertech.taskmaster.impl;
 
-import com.github.bordertech.taskmanager.TaskFuture;
-import com.github.bordertech.taskmanager.TaskManagerException;
+import com.github.bordertech.taskmaster.TaskFuture;
+import com.github.bordertech.taskmaster.TaskMasterException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -42,8 +42,8 @@ public class TaskFutureResult<T> implements TaskFuture<T> {
 
 	@Override
 	public T get() throws InterruptedException, ExecutionException {
-		if (result instanceof TaskManagerException) {
-			Exception excp = (TaskManagerException) result;
+		if (result instanceof TaskMasterException) {
+			Exception excp = (TaskMasterException) result;
 			throw new ExecutionException("Error processing future. " + excp.getMessage(), excp);
 		}
 		return result;

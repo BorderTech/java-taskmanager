@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmanager.service;
+package com.github.bordertech.taskmaster.service;
 
 import javax.cache.Cache;
 import javax.cache.expiry.Duration;

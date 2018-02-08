@@ -1,16 +1,16 @@
-package com.github.bordertech.taskmanager;
+package com.github.bordertech.taskmaster;
 
 import java.util.concurrent.RejectedExecutionException;
 
 /**
- * TaskManager helps projects run ASYNC tasks.
+ * TaskMaster helps projects run ASYNC tasks.
  *
  * <p>
- * TaskManager allows a Runnable task to be submitted for execution and returns a Future representing that task. The
+ * TaskMaster allows a Runnable task to be submitted for execution and returns a Future representing that task. The
  * Future's get method will return the given result upon successful completion.
  * </p>
  * <p>
- * As Web applications require a Future implementation that can be serializable, the TaskManager has a custom interface
+ * As Web applications require a Future implementation that can be serializable, the TaskMaster has a custom interface
  * TaskFuture that implements both Future and Serializable. It does not make sense for a Future to be Serializable as it
  * is running on a specific thread on a particular server. To allow a Web Application to keep a reference to the Future,
  * the default implementation of TaskFuture (ie TaskFutureWrapper) wraps the future by putting the Future on a cache and
@@ -20,15 +20,11 @@ import java.util.concurrent.RejectedExecutionException;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public interface TaskManager {
+public interface TaskMaster {
 
 	/**
 	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be
 	 * accepted. Invocation has no additional effect if already shut down.
-	 *
-	 * <p>
-	 * This method does not wait for previously submitted tasks to complete execution. Use
-	 * {@link #awaitTermination awaitTermination} to do that.
 	 *
 	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
 	 * threads that the caller is not permitted to modify because it does not hold {@link

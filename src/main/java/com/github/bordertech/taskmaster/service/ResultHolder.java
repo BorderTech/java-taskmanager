@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmanager.service;
+package com.github.bordertech.taskmaster.service;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmanager.cache;
+package com.github.bordertech.taskmaster.cache;
 
 import javax.cache.Cache;
 import javax.cache.configuration.Configuration;

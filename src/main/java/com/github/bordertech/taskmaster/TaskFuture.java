@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmanager;
+package com.github.bordertech.taskmaster;
 
 import java.io.Serializable;
 import java.util.concurrent.Future;

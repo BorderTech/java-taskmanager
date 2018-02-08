@@ -1,10 +1,10 @@
-package com.github.bordertech.taskmanager.impl;
+package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.config.Config;
 import com.github.bordertech.didums.Didums;
-import com.github.bordertech.taskmanager.TaskFuture;
-import com.github.bordertech.taskmanager.TaskManagerException;
-import com.github.bordertech.taskmanager.cache.CacheHelper;
+import com.github.bordertech.taskmaster.TaskFuture;
+import com.github.bordertech.taskmaster.TaskMasterException;
+import com.github.bordertech.taskmaster.cache.CacheHelper;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -32,7 +32,7 @@ public class TaskFutureWrapper<T> implements TaskFuture<T> {
 
 	static {
 		// Get default duration
-		Long duration = Config.getInstance().getLong("bordertech.taskmanager.future.cache.duration", Long.valueOf("300"));
+		Long duration = Config.getInstance().getLong("bordertech.taskmaster.future.cache.duration", Long.valueOf("300"));
 
 		// Setup cache config
 		MutableConfiguration<String, Future> config = new MutableConfiguration<>();
@@ -91,7 +91,7 @@ public class TaskFutureWrapper<T> implements TaskFuture<T> {
 		Future<T> future = CACHE.get(id);
 		if (future == null) {
 			// Future has expired or been removed from the cache
-			future = new TaskFutureResult(new TaskManagerException("Future has been removed from the cache"));
+			future = new TaskFutureResult(new TaskMasterException("Future has been removed from the cache"));
 			CACHE.put(id, future);
 		}
 		return future;

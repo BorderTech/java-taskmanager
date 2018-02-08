@@ -1,7 +1,7 @@
-package com.github.bordertech.taskmanager.impl;
+package com.github.bordertech.taskmaster.impl;
 
-import com.github.bordertech.taskmanager.TaskFuture;
-import com.github.bordertech.taskmanager.TaskManager;
+import com.github.bordertech.taskmaster.TaskFuture;
+import com.github.bordertech.taskmaster.TaskMaster;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -14,7 +14,7 @@ import javax.inject.Singleton;
  * @since 1.0.0
  */
 @Singleton
-public class TaskManagerExecutorServiceImpl implements TaskManager {
+public class TaskMasterExecutorServiceImpl implements TaskMaster {
 
 	private static final ExecutorService POOL = Executors.newCachedThreadPool();
 

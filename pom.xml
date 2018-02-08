@@ -2,28 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<name>corpdir-lib-taskmanager</name>
-	<artifactId>corpdir-lib-taskmanager</artifactId>
+	<groupId>com.github.bordertech.taskmaster</groupId>
+	<name>taskmaster</name>
+	<artifactId>taskmaster</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<parent>
-		<groupId>com.github.bordertech.corpdir</groupId>
-		<artifactId>corpdir-srv-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>com.github.bordertech.common</groupId>
+		<artifactId>qa-parent</artifactId>
+		<version>1.0.4</version>
 	</parent>
 
 	<packaging>jar</packaging>
 
 	<properties>
-		<multiproject.basedir>${basedir}/..</multiproject.basedir>
-		<wc.qa.skip>false</wc.qa.skip>
+		<bt.qa.skip>false</bt.qa.skip>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.bordertech.corpdir</groupId>
-			<artifactId>corpdir-lib-didums</artifactId>
-			<version>${project.version}</version>
+			<groupId>com.github.bordertech.didums</groupId>
+			<artifactId>didums-core</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<!-- Injection interface. JSR 330 -->
@@ -31,18 +31,21 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<scope>provided</scope>
+			<version>1</version>
 		</dependency>
 
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
 		</dependency>
 
 		<!-- Caching API. -->
 		<dependency>
 			<groupId>javax.cache</groupId>
 			<artifactId>cache-api</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<!-- Servlet Interface -->
@@ -50,6 +53,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
+			<version>2.5</version>
 		</dependency>
 
 	</dependencies>
