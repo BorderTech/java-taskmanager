@@ -1,5 +1,6 @@
 package com.github.bordertech.taskmaster.service;
 
+import com.github.bordertech.taskmaster.RejectedTaskException;
 import javax.cache.Cache;
 import javax.cache.expiry.Duration;
 
@@ -58,9 +59,26 @@ public interface ServiceHelper {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing
+	 * @throws RejectedTaskException if the task cannot be scheduled for execution
 	 */
 	<S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action);
+			final S criteria, final ServiceAction<S, T> action) throws RejectedTaskException;
+
+	/**
+	 * Handle an async service call.
+	 *
+	 * @param cache the result holder cache
+	 * @param cacheKey the key for the result holder
+	 * @param criteria the criteria
+	 * @param action the service action
+	 * @param pool service thread pool
+	 * @param <S> the criteria type
+	 * @param <T> the service response
+	 * @return the result or null if still processing
+	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 */
+	<S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
+			final S criteria, final ServiceAction<S, T> action, final String pool) throws RejectedTaskException;
 
 	/**
 	 *
@@ -100,8 +118,27 @@ public interface ServiceHelper {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing an async call
+	 * @throws RejectedTaskException if the task cannot be scheduled for execution
 	 */
 	<S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action, final CallType callType);
+			final S criteria, final ServiceAction<S, T> action, final CallType callType) throws RejectedTaskException;
+
+	/**
+	 *
+	 * Handle a cached service call.
+	 *
+	 * @param cache the result holder cache
+	 * @param cacheKey the key for the result holder
+	 * @param criteria the criteria
+	 * @param action the service action
+	 * @param callType the call type
+	 * @param pool service thread pool
+	 * @param <S> the criteria type
+	 * @param <T> the service response
+	 * @return the result or null if still processing an async call
+	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 */
+	<S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey,
+			final S criteria, final ServiceAction<S, T> action, final CallType callType, final String pool) throws RejectedTaskException;
 
 }
