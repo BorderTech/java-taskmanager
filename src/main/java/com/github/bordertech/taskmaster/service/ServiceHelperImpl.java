@@ -2,6 +2,7 @@ package com.github.bordertech.taskmaster.service;
 
 import com.github.bordertech.config.Config;
 import com.github.bordertech.didums.Didums;
+import com.github.bordertech.taskmaster.RejectedTaskException;
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.TaskMaster;
 import com.github.bordertech.taskmaster.TaskMasterException;
@@ -58,7 +59,15 @@ public final class ServiceHelperImpl implements ServiceHelper {
 
 	@Override
 	public <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
-			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) {
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType)
+			throws RejectedTaskException {
+		return handleServiceCallType(cache, cacheKey, criteria, action, callType, null);
+	}
+
+	@Override
+	public <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType, final String pool)
+			throws RejectedTaskException {
 		if (callType == null) {
 			throw new IllegalArgumentException("Call type must be provided.");
 		}
@@ -68,7 +77,7 @@ public final class ServiceHelperImpl implements ServiceHelper {
 		}
 		if (callType.isAsync()) {
 			// ASync
-			return handleAsyncServiceCall(cache, cacheKey, criteria, action);
+			return handleAsyncServiceCall(cache, cacheKey, criteria, action, pool);
 		} else {
 			// Sync
 			return handleCachedServiceCall(cache, cacheKey, criteria, action);
@@ -102,7 +111,13 @@ public final class ServiceHelperImpl implements ServiceHelper {
 
 	@Override
 	public <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
-			final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action) throws RejectedTaskException {
+		return handleAsyncServiceCall(cache, cacheKey, criteria, action, null);
+	}
+
+	@Override
+	public <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final String pool) throws RejectedTaskException {
 
 		// Check cache and cache key provided
 		if (cache == null) {
@@ -145,10 +160,12 @@ public final class ServiceHelperImpl implements ServiceHelper {
 			}
 		};
 		try {
-			TaskFuture future = TASK_MASTER.submit(task, result);
+			TaskFuture future = TASK_MASTER.submit(task, result, pool);
 			// Cache the future
 			getProcessingCache().put(processingKey, future);
 			return null;
+		} catch (RejectedTaskException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new TaskMasterException("Could not start thread to process task action. " + e.getMessage());
 		}

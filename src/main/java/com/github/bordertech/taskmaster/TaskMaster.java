@@ -1,7 +1,5 @@
 package com.github.bordertech.taskmaster;
 
-import java.util.concurrent.RejectedExecutionException;
-
 /**
  * TaskMaster helps projects run ASYNC tasks.
  *
@@ -36,14 +34,29 @@ public interface TaskMaster {
 	/**
 	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
 	 * method will return the given result upon successful completion.
+	 * <p>
+	 * Uses the default thread pool.
+	 * </p>
 	 *
 	 * @param <T> the type for the future
 	 * @param task the task to submit
 	 * @param result the result to return
 	 * @return a Future representing pending completion of the task
-	 * @throws RejectedExecutionException if the task cannot be scheduled for execution
-	 * @throws NullPointerException if the task is null
+	 * @throws RejectedTaskException if the task cannot be scheduled for execution
 	 */
-	<T> TaskFuture<T> submit(final Runnable task, final T result);
+	<T> TaskFuture<T> submit(final Runnable task, final T result) throws RejectedTaskException;
+
+	/**
+	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
+	 * method will return the given result upon successful completion.
+	 *
+	 * @param <T> the type for the future
+	 * @param task the task to submit
+	 * @param result the result to return
+	 * @param pool the thread pool name, or null if no pool
+	 * @return a Future representing pending completion of the task
+	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 */
+	<T> TaskFuture<T> submit(final Runnable task, final T result, final String pool) throws RejectedTaskException;
 
 }
