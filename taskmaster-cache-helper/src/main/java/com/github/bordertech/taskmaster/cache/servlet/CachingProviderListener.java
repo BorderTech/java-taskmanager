@@ -6,7 +6,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * Cleanup any task master threads.
+ * Cleanup any cache resources when servlet context destroyed.
  */
 public class CachingProviderListener implements ServletContextListener {
 
