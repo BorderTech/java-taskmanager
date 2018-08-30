@@ -44,17 +44,12 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- Didums Injection -->
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
 				<artifactId>didums-core</artifactId>
 				<version>1.0.0</version>
-			</dependency>
-
-			<!-- Injection interface. JSR 330 -->
-			<dependency>
-				<groupId>javax.inject</groupId>
-				<artifactId>javax.inject</artifactId>
-				<version>1</version>
 			</dependency>
 
 			<!-- Logging -->
@@ -77,11 +72,14 @@
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
 			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
 	<modules>
-		<module>taskmaster</module>
+		<module>taskmaster-cache-helper</module>
+		<module>taskmaster-core</module>
+		<module>taskmaster-service-helper</module>
 	</modules>
 
 </project>

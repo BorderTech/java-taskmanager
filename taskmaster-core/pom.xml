@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.bordertech.taskmaster</groupId>
-	<name>taskmaster</name>
-	<artifactId>taskmaster</artifactId>
+	<name>taskmaster-core</name>
+	<artifactId>taskmaster-core</artifactId>
 	<version>1.0.2-SNAPSHOT</version>
 
 	<parent>
@@ -25,29 +25,18 @@
 	</description>
 
 	<dependencies>
+
+		<!-- TaskMaster Cache Helper -->
+		<dependency>
+			<groupId>com.github.bordertech.taskmaster</groupId>
+			<artifactId>taskmaster-cache-helper</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- Didums Injection -->
 		<dependency>
 			<groupId>com.github.bordertech.didums</groupId>
 			<artifactId>didums-core</artifactId>
-		</dependency>
-
-		<!-- Injection interface. JSR 330 -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<!-- Caching API. -->
-		<dependency>
-			<groupId>javax.cache</groupId>
-			<artifactId>cache-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Servlet Interface -->
