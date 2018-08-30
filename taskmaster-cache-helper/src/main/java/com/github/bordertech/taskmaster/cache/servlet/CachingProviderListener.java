@@ -10,17 +10,17 @@ import javax.servlet.ServletContextListener;
  */
 public class CachingProviderListener implements ServletContextListener {
 
-    @Override
-    public void contextInitialized(final ServletContextEvent sce) {
-        // Do nothing
-    }
+	@Override
+	public void contextInitialized(final ServletContextEvent sce) {
+		// Do nothing
+	}
 
-    @Override
-    public void contextDestroyed(final ServletContextEvent sce) {
-        CachingProvider provider = Caching.getCachingProvider();
-        if (provider != null && !provider.getCacheManager().isClosed()) {
-            provider.getCacheManager().close();
-        }
-    }
+	@Override
+	public void contextDestroyed(final ServletContextEvent sce) {
+		CachingProvider provider = Caching.getCachingProvider();
+		if (provider != null && !provider.getCacheManager().isClosed()) {
+			provider.getCacheManager().close();
+		}
+	}
 
 }
