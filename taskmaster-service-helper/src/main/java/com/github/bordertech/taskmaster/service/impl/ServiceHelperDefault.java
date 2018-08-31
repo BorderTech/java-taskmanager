@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmaster.service;
+package com.github.bordertech.taskmaster.service.impl;
 
 import com.github.bordertech.config.Config;
 import com.github.bordertech.didums.Didums;
@@ -7,6 +7,11 @@ import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.TaskMaster;
 import com.github.bordertech.taskmaster.TaskMasterException;
 import com.github.bordertech.taskmaster.cache.CacheHelper;
+import com.github.bordertech.taskmaster.service.CallType;
+import com.github.bordertech.taskmaster.service.ResultHolder;
+import com.github.bordertech.taskmaster.service.ServiceAction;
+import com.github.bordertech.taskmaster.service.ServiceException;
+import com.github.bordertech.taskmaster.service.ServiceHelper;
 import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +32,7 @@ import javax.inject.Singleton;
  * @since 1.0.0
  */
 @Singleton
-public final class ServiceHelperImpl implements ServiceHelper {
+public final class ServiceHelperDefault implements ServiceHelper {
 
 	private static final TaskMaster TASK_MASTER = Didums.getService(TaskMaster.class);
 	private static final CacheHelper CACHE_HELPER = Didums.getService(CacheHelper.class);

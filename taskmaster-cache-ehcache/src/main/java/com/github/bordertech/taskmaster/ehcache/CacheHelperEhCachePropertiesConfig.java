@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmaster.ehcache;
 
 import com.github.bordertech.config.Config;
-import com.github.bordertech.taskmaster.cache.CacheHelperXmlConfigImpl;
+import com.github.bordertech.taskmaster.cache.impl.CacheHelperXmlConfig;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -24,16 +24,16 @@ import org.ehcache.jsr107.Eh107Configuration;
  * Cache Helper that configures ehcache with properties and wraps the cache with JSR107 interface.
  */
 @Singleton
-public class CacheHelperEhCachePropertiesConfigImpl extends CacheHelperXmlConfigImpl {
+public class CacheHelperEhCachePropertiesConfig extends CacheHelperXmlConfig {
 
-	private static final Log LOGGER = LogFactory.getLog(CacheHelperEhCachePropertiesConfigImpl.class);
+	private static final Log LOGGER = LogFactory.getLog(CacheHelperEhCachePropertiesConfig.class);
 	private static final String CACHE_PREFIX = "Cache [";
 	private final Map<String, Triple<String, Class, Class>> caches = new HashMap<>();
 
 	/**
 	 * Construct Helper.
 	 */
-	public CacheHelperEhCachePropertiesConfigImpl() {
+	public CacheHelperEhCachePropertiesConfig() {
 		// Add property change listener
 		PropertyChangeListener listener = new RefreshCachePropertyChangeListener();
 		Config.addPropertyChangeListener(listener);

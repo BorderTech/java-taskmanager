@@ -1,6 +1,7 @@
-package com.github.bordertech.taskmaster.cache;
+package com.github.bordertech.taskmaster.cache.impl;
 
 import com.github.bordertech.config.Config;
+import com.github.bordertech.taskmaster.cache.CacheHelper;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.cache.Cache;
@@ -17,9 +18,9 @@ import org.apache.commons.logging.LogFactory;
  * Cache Helper that relies on the cache config in a xml file.
  */
 @Singleton
-public class CacheHelperXmlConfigImpl implements CacheHelper {
+public class CacheHelperXmlConfig implements CacheHelper {
 
-	private static final Log LOGGER = LogFactory.getLog(CacheHelperXmlConfigImpl.class);
+	private static final Log LOGGER = LogFactory.getLog(CacheHelperXmlConfig.class);
 
 	private static final CacheManager MANAGER;
 
@@ -29,12 +30,12 @@ public class CacheHelperXmlConfigImpl implements CacheHelper {
 		LOGGER.info("Loading cache config [" + config + "].");
 		URI uri;
 		try {
-			uri = CacheHelperXmlConfigImpl.class.getResource(config).toURI();
+			uri = CacheHelperXmlConfig.class.getResource(config).toURI();
 		} catch (URISyntaxException e) {
 			throw new IllegalStateException("Could not load cache config [" + config + "]." + e.getMessage(), e);
 		}
 		CachingProvider cachingProvider = Caching.getCachingProvider();
-		MANAGER = cachingProvider.getCacheManager(uri, CacheHelperXmlConfigImpl.class.getClassLoader());
+		MANAGER = cachingProvider.getCacheManager(uri, CacheHelperXmlConfig.class.getClassLoader());
 	}
 
 	@Override

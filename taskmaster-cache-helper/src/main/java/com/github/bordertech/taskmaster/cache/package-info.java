@@ -1,4 +1,4 @@
 /**
- * Create Cache helper based on JSR 107.
+ * CacheHelper based on JSR 107.
  */
 package com.github.bordertech.taskmaster.cache;
