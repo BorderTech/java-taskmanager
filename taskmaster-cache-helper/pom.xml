@@ -38,6 +38,19 @@
 			<artifactId>cache-api</artifactId>
 		</dependency>
 
+		<!-- Config -->
+		<dependency>
+			<groupId>com.github.bordertech.config</groupId>
+			<artifactId>config</artifactId>
+		</dependency>
+
+		<!-- Injection interface. JSR 330 -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Servlet Interface -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

@@ -52,6 +52,20 @@
 				<version>1.0.0</version>
 			</dependency>
 
+			<!-- Injection interface. JSR 330 -->
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
+
+			<!-- Config -->
+			<dependency>
+				<groupId>com.github.bordertech.config</groupId>
+				<artifactId>config</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+
 			<!-- Logging -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
