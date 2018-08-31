@@ -87,11 +87,26 @@
 				<version>2.5</version>
 			</dependency>
 
+			<!-- ehcache -->
+			<dependency>
+				<groupId>org.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>3.5.2</version>
+			</dependency>
+
+			<!-- Common Lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.8</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
 	<modules>
 		<module>taskmaster-cache-helper</module>
+		<module>taskmaster-cache-ehcache</module>
 		<module>taskmaster-core</module>
 		<module>taskmaster-service-helper</module>
 	</modules>
