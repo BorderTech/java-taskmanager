@@ -25,7 +25,7 @@ import javax.inject.Singleton;
  * @since 1.0.0
  */
 @Singleton
-public class TaskMasterExecutorServiceImpl implements TaskMaster {
+public class TaskMasterExecutorService implements TaskMaster {
 
 	private static final Map<String, ExecutorService> THREAD_POOLS = new HashMap<>();
 

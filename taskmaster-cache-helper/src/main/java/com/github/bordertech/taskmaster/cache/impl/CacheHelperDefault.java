@@ -1,5 +1,6 @@
-package com.github.bordertech.taskmaster.cache;
+package com.github.bordertech.taskmaster.cache.impl;
 
+import com.github.bordertech.taskmaster.cache.CacheHelper;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
@@ -13,7 +14,7 @@ import javax.cache.expiry.Duration;
  *
  * @author jonathan
  */
-public class CacheHelperImpl implements CacheHelper {
+public class CacheHelperDefault implements CacheHelper {
 
 	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,

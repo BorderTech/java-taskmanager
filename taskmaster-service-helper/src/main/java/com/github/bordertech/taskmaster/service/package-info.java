@@ -1,4 +1,4 @@
 /**
- * Invoking service call helpers.
+ * Invoking service call helper.
  */
 package com.github.bordertech.taskmaster.service;
