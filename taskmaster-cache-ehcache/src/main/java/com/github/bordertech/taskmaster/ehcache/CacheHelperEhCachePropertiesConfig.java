@@ -116,7 +116,7 @@ public class CacheHelperEhCachePropertiesConfig extends CacheHelperXmlConfig {
 	 * @return the property key
 	 */
 	private String getKey(final String name, final String property) {
-		return "av.cache." + name + "." + property;
+		return "bordertech.taskmaster.cache." + name + "." + property;
 	}
 
 	/**
