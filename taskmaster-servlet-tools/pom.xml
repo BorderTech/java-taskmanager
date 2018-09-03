@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.bordertech.taskmaster</groupId>
-	<name>taskmaster-core</name>
-	<artifactId>taskmaster-core</artifactId>
+	<name>taskmaster-servlet-tools</name>
+	<artifactId>taskmaster-servlet-tools</artifactId>
 	<version>1.0.2-SNAPSHOT</version>
 
 	<parent>
@@ -21,29 +21,15 @@
 	</properties>
 
 	<description>
-		Task Master allows a Runnable task to be submitted for execution and returns a Future representing that task.
+		Task Master provides Servlet Tools such as filters and listeners.
 	</description>
 
 	<dependencies>
 
-		<!-- TaskMaster Cache Helper -->
+		<!-- Commons Logging -->
 		<dependency>
-			<groupId>com.github.bordertech.taskmaster</groupId>
-			<artifactId>taskmaster-cache-helper</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<!-- TaskMaster Servlet Tools -->
-		<dependency>
-			<groupId>com.github.bordertech.taskmaster</groupId>
-			<artifactId>taskmaster-servlet-tools</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<!-- Didums Injection -->
-		<dependency>
-			<groupId>com.github.bordertech.didums</groupId>
-			<artifactId>didums-core</artifactId>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
 		</dependency>
 
 		<!-- Servlet Interface -->
@@ -54,5 +40,4 @@
 		</dependency>
 
 	</dependencies>
-
 </project>
