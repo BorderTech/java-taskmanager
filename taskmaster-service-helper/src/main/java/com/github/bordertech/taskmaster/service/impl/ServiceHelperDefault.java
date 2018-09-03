@@ -8,6 +8,7 @@ import com.github.bordertech.taskmaster.TaskMaster;
 import com.github.bordertech.taskmaster.TaskMasterException;
 import com.github.bordertech.taskmaster.cache.CacheHelper;
 import com.github.bordertech.taskmaster.service.CallType;
+import com.github.bordertech.taskmaster.service.ExceptionUtil;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.ServiceAction;
 import com.github.bordertech.taskmaster.service.ServiceException;
@@ -46,7 +47,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 	private static final Duration DEFAULT_PROCESSING_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_PROCESSING_DURATION_SECONDS);
 
 	@Override
-	public <S, T> ResultHolder<S, T> handleServiceCall(final S criteria, final ServiceAction<S, T> action) {
+	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCall(final S criteria, final ServiceAction<S, T> action) {
 		// Check action provided
 		if (action == null) {
 			throw new IllegalArgumentException("No service action has been provided. ");
@@ -55,22 +56,21 @@ public final class ServiceHelperDefault implements ServiceHelper {
 		// Do service call
 		try {
 			T resp = action.service(criteria);
-			return new ResultHolder<>(criteria, resp);
+			return new ResultHolder(criteria, resp);
 		} catch (Exception e) {
-			ServiceException excp = new ServiceException("Error calling service." + e.getMessage(), e);
-			return new ResultHolder<>(criteria, excp);
+			return new ResultHolder(criteria, ExceptionUtil.getSerializableException(e));
 		}
 	}
 
 	@Override
-	public <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType)
 			throws RejectedTaskException {
 		return handleServiceCallType(cache, cacheKey, criteria, action, callType, null);
 	}
 
 	@Override
-	public <S, T> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType, final String pool)
 			throws RejectedTaskException {
 		if (callType == null) {
@@ -90,7 +90,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 	}
 
 	@Override
-	public <S, T> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache,
+	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action) {
 
 		// Check cache and cache key provided
@@ -115,13 +115,13 @@ public final class ServiceHelperDefault implements ServiceHelper {
 	}
 
 	@Override
-	public <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action) throws RejectedTaskException {
 		return handleAsyncServiceCall(cache, cacheKey, criteria, action, null);
 	}
 
 	@Override
-	public <S, T> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
 			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final String pool) throws RejectedTaskException {
 
 		// Check cache and cache key provided
@@ -151,7 +151,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 		}
 
 		// Setup the bean to hold the service result
-		final ProcessingServiceResult<S, T> result = new ProcessingServiceResult(cacheKey);
+		final ProcessingMutableResult<S, T> result = new ProcessingMutableResult(cacheKey);
 		Runnable task = new Runnable() {
 			@Override
 			public void run() {
@@ -159,8 +159,8 @@ public final class ServiceHelperDefault implements ServiceHelper {
 					T resp = action.service(criteria);
 					result.setResult(resp);
 				} catch (Exception e) {
-					ServiceException excp = new ServiceException("Error calling service." + e.getMessage(), e);
-					result.setException(excp);
+					// Check exception is serializable to be held in the cache (sometimes they arent)
+					result.setException(ExceptionUtil.getSerializableException(e));
 				}
 			}
 		};
@@ -177,7 +177,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 	}
 
 	@Override
-	public synchronized <S, T> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache,
+	public synchronized <S extends Serializable, T extends Serializable> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache,
 			final String cacheKey) {
 
 		// Check cache and cache key provided
@@ -191,7 +191,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 		String processingKey = getProcessingKey(cache.getName(), cacheKey);
 
 		// Get the future
-		TaskFuture<ProcessingServiceResult> future = getProcessingCache().get(processingKey);
+		TaskFuture<ProcessingMutableResult> future = getProcessingCache().get(processingKey);
 
 		// Future has expired or been removed from the Cache
 		if (future == null) {
@@ -220,7 +220,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 
 		// Done, so Extract the result
 		try {
-			ProcessingServiceResult serviceResult = future.get();
+			ProcessingMutableResult serviceResult = future.get();
 			ResultHolder result;
 			if (serviceResult.isException()) {
 				result = new ResultHolder(serviceResult.getMetaData(), serviceResult.getException());
@@ -288,12 +288,12 @@ public final class ServiceHelperDefault implements ServiceHelper {
 	}
 
 	/**
-	 * Used to hold the service result with the ASync processing.
+	 * Used to hold the service result with the ASync processing cache.
 	 *
 	 * @param <M> the meta data type
 	 * @param <T> the result type
 	 */
-	public static final class ProcessingServiceResult<M, T> implements Serializable {
+	public static final class ProcessingMutableResult<M extends Serializable, T extends Serializable> implements Serializable {
 
 		private final M metaData;
 		private T result;
@@ -302,7 +302,7 @@ public final class ServiceHelperDefault implements ServiceHelper {
 		/**
 		 * @param metaData the meta data
 		 */
-		public ProcessingServiceResult(final M metaData) {
+		public ProcessingMutableResult(final M metaData) {
 			this.metaData = metaData;
 		}
 

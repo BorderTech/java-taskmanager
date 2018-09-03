@@ -1,5 +1,7 @@
 package com.github.bordertech.taskmaster.service;
 
+import java.io.Serializable;
+
 /**
  * Invoke a service interface.
  *
@@ -8,7 +10,7 @@ package com.github.bordertech.taskmaster.service;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public interface ServiceAction<S, T> {
+public interface ServiceAction<S extends Serializable, T extends Serializable> {
 
 	/**
 	 * Invoke service call.

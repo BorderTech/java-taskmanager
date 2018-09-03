@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class ResultHolder<M, T> implements Serializable {
+public class ResultHolder<M extends Serializable, T extends Serializable> implements Serializable {
 
 	private final M metaData;
 	private final T result;
@@ -38,6 +38,10 @@ public class ResultHolder<M, T> implements Serializable {
 	 * @param exception the exception that occurred
 	 */
 	public ResultHolder(final M metaData, final Exception exception) {
+		// Exception must be provided
+		if (exception == null) {
+			throw new IllegalArgumentException("An exception must be provided.");
+		}
 		this.metaData = metaData;
 		this.result = null;
 		this.exception = exception;
