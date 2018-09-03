@@ -66,11 +66,18 @@
 				<version>1.0.1</version>
 			</dependency>
 
-			<!-- Logging -->
+			<!-- SLF4J Logging -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>1.7.25</version>
+			</dependency>
+
+			<!-- Commons Logging -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
 			</dependency>
 
 			<!-- Caching API. -->
@@ -109,6 +116,7 @@
 		<module>taskmaster-cache-ehcache</module>
 		<module>taskmaster-core</module>
 		<module>taskmaster-service-helper</module>
+		<module>taskmaster-servlet-tools</module>
 	</modules>
 
 </project>
