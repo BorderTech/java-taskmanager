@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmaster.service;
 
 /**
- * The service call type to invoke.
+ * The cached service call type to invoke.
  *
  * @author Jonathan Austin
  * @since 1.0.0
