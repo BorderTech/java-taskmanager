@@ -15,8 +15,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class LogicalThreadPool implements Serializable {
 
-	private static final int DEFAULT_WAIT_INTERVAL_MILLISECONDS = Config.getInstance().getInt("bordertech.tm.logicalthreadpool.wait.interval", 300);
-	private static final int DEFAULT_MAX_WAIT_INTERVALS = Config.getInstance().getInt("bordertech.tm.logicalthreadpool.wait.max.intervals", 200);
+	private static final int DEFAULT_WAIT_INTERVAL_MILLISECONDS = Config.getInstance().getInt("bordertech.taskmaster.logicalthreadpool.wait.interval", 300);
+	private static final int DEFAULT_MAX_WAIT_INTERVALS = Config.getInstance().getInt("bordertech.taskmaster.logicalthreadpool.wait.max.intervals", 200);
 
 	private static final Log LOGGER = LogFactory.getLog(LogicalThreadPool.class);
 	private final String name;
