@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmaster.service;
+package com.github.bordertech.taskmaster.service.exception;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;

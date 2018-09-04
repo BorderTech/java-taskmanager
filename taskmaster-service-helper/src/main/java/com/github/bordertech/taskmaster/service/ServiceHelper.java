@@ -1,6 +1,7 @@
 package com.github.bordertech.taskmaster.service;
 
-import com.github.bordertech.taskmaster.RejectedTaskException;
+import com.github.bordertech.taskmaster.service.exception.AsyncServiceException;
+import com.github.bordertech.taskmaster.service.exception.RejectedServiceException;
 import java.io.Serializable;
 import javax.cache.Cache;
 import javax.cache.expiry.Duration;
@@ -11,20 +12,6 @@ import javax.cache.expiry.Duration;
  * @author jonathan
  */
 public interface ServiceHelper {
-
-	/**
-	 * This is the method checks if the processing task has completed.
-	 * <p>
-	 * If the future is done, then it will transition the result from the processing cache into the result holder cache.
-	 * </p>
-	 *
-	 * @param cache the result holder cache
-	 * @param cacheKey the key for the result holder
-	 * @param <S> the criteria type
-	 * @param <T> the service response
-	 * @return the result or null if still processing
-	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache, final String cacheKey);
 
 	/**
 	 * Provide a default result holder cache with the default duration.
@@ -60,10 +47,10 @@ public interface ServiceHelper {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing
-	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action) throws RejectedTaskException;
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action) throws RejectedServiceException;
 
 	/**
 	 * Handle an async service call with a designated thread pool.
@@ -76,10 +63,10 @@ public interface ServiceHelper {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing
-	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action, final String pool) throws RejectedTaskException;
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleAsyncServiceCall(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final String pool) throws RejectedServiceException;
 
 	/**
 	 *
@@ -93,8 +80,8 @@ public interface ServiceHelper {
 	 * @param <T> the service response
 	 * @return the result
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action);
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleCachedServiceCall(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action);
 
 	/**
 	 * Handle a service call.
@@ -119,10 +106,10 @@ public interface ServiceHelper {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing an async call
-	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action, final CallType callType) throws RejectedTaskException;
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType) throws RejectedServiceException;
 
 	/**
 	 *
@@ -137,9 +124,25 @@ public interface ServiceHelper {
 	 * @param <S> the criteria type
 	 * @param <T> the service response
 	 * @return the result or null if still processing an async call
-	 * @throws RejectedTaskException if the task cannot be scheduled for execution
+	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache, final String cacheKey,
-			final S criteria, final ServiceAction<S, T> action, final CallType callType, final String pool) throws RejectedTaskException;
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCallType(final Cache<String, ResultHolder> cache,
+			final String cacheKey, final S criteria, final ServiceAction<S, T> action, final CallType callType, final String pool) throws RejectedServiceException;
+
+	/**
+	 * This is the method that checks if the processing task has completed.
+	 * <p>
+	 * It the task is complete it will return the result and put the result in the result cache.
+	 * </p>
+	 *
+	 * @param cache the result holder cache
+	 * @param cacheKey the key for the result holder
+	 * @param <S> the criteria type
+	 * @param <T> the service response
+	 * @return the result or null if still processing
+	 * @throws AsyncServiceException an exception while processing an Async task
+	 */
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> checkASyncResult(final Cache<String, ResultHolder> cache,
+			final String cacheKey) throws AsyncServiceException;
 
 }

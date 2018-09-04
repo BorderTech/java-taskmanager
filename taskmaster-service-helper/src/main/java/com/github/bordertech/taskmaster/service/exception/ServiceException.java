@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmaster.service;
+package com.github.bordertech.taskmaster.service.exception;
 
 /**
  * Service exception that can be thrown while processing a service request.
