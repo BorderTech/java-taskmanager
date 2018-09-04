@@ -3,7 +3,7 @@ package com.github.bordertech.taskmaster.service.impl;
 import com.github.bordertech.taskmaster.service.CallType;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.ServiceAction;
-import com.github.bordertech.taskmaster.service.ServiceHelper;
+import com.github.bordertech.taskmaster.service.ServiceHelperProvider;
 import com.github.bordertech.taskmaster.service.exception.AsyncServiceException;
 import com.github.bordertech.taskmaster.service.exception.ExceptionUtil;
 import com.github.bordertech.taskmaster.service.exception.RejectedServiceException;
@@ -13,11 +13,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Provide a starter implementation of ServiceHelper.
+ * Provide a starter implementation of ServiceHelperProvider.
  */
-public abstract class AbstractServiceHelper implements ServiceHelper {
+public abstract class AbstractServiceHelperProvider implements ServiceHelperProvider {
 
-	private static final Log LOGGER = LogFactory.getLog(AbstractServiceHelper.class);
+	private static final Log LOGGER = LogFactory.getLog(AbstractServiceHelperProvider.class);
 
 	@Override
 	public <S extends Serializable, T extends Serializable> ResultHolder<S, T> handleServiceCall(final S criteria, final ServiceAction<S, T> action) {

@@ -1,9 +1,8 @@
 package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.config.Config;
-import com.github.bordertech.taskmaster.RejectedTaskException;
+import com.github.bordertech.taskmaster.exception.RejectedTaskException;
 import com.github.bordertech.taskmaster.TaskFuture;
-import com.github.bordertech.taskmaster.TaskMaster;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -17,6 +16,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
+import com.github.bordertech.taskmaster.TaskMasterProvider;
 
 /**
  * Handle running tasks via {@link ExecutorService}.
@@ -25,7 +25,7 @@ import javax.inject.Singleton;
  * @since 1.0.0
  */
 @Singleton
-public class TaskMasterExecutorService implements TaskMaster {
+public class TaskMasterProviderExecutorService implements TaskMasterProvider {
 
 	private static final Map<String, ExecutorService> THREAD_POOLS = new HashMap<>();
 

@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmaster;
+package com.github.bordertech.taskmaster.exception;
 
 /**
  * Task Master Exception has occurred.

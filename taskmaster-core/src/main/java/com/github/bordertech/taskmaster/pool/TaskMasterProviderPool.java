@@ -1,19 +1,19 @@
 package com.github.bordertech.taskmaster.pool;
 
-import com.github.bordertech.taskmaster.RejectedTaskException;
+import com.github.bordertech.taskmaster.exception.RejectedTaskException;
 import com.github.bordertech.taskmaster.TaskFuture;
-import com.github.bordertech.taskmaster.TaskMaster;
 import com.github.bordertech.taskmaster.impl.TaskFutureWrapper;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import javax.inject.Singleton;
+import com.github.bordertech.taskmaster.TaskMasterProvider;
 
 /**
  * TaskMaster implementation that allows for Thread Pools.
  */
 @Singleton
-public class TaskMasterPoolImpl implements TaskMaster {
+public class TaskMasterProviderPool implements TaskMasterProvider {
 
 	@Override
 	public void shutdown() {

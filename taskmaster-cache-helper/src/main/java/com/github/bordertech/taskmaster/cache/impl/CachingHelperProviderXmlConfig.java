@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmaster.cache.impl;
 
 import com.github.bordertech.config.Config;
-import com.github.bordertech.taskmaster.cache.CacheHelper;
+import com.github.bordertech.taskmaster.cache.CachingHelperProvider;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.cache.Cache;
@@ -15,12 +15,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Cache Helper that relies on the cache config in a xml file.
+ * CachingHelperProvider that relies on the cache config in a xml file.
  */
 @Singleton
-public class CacheHelperXmlConfig implements CacheHelper {
+public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 
-	private static final Log LOGGER = LogFactory.getLog(CacheHelperXmlConfig.class);
+	private static final Log LOGGER = LogFactory.getLog(CachingHelperProviderXmlConfig.class);
 
 	private static final CacheManager MANAGER;
 
@@ -30,12 +30,12 @@ public class CacheHelperXmlConfig implements CacheHelper {
 		LOGGER.info("Loading cache config [" + config + "].");
 		URI uri;
 		try {
-			uri = CacheHelperXmlConfig.class.getResource(config).toURI();
+			uri = CachingHelperProviderXmlConfig.class.getResource(config).toURI();
 		} catch (URISyntaxException e) {
 			throw new IllegalStateException("Could not load cache config [" + config + "]." + e.getMessage(), e);
 		}
 		CachingProvider cachingProvider = Caching.getCachingProvider();
-		MANAGER = cachingProvider.getCacheManager(uri, CacheHelperXmlConfig.class.getClassLoader());
+		MANAGER = cachingProvider.getCacheManager(uri, CachingHelperProviderXmlConfig.class.getClassLoader());
 	}
 
 	@Override

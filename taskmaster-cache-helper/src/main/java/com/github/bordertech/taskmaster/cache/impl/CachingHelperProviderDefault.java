@@ -1,6 +1,6 @@
 package com.github.bordertech.taskmaster.cache.impl;
 
-import com.github.bordertech.taskmaster.cache.CacheHelper;
+import com.github.bordertech.taskmaster.cache.CachingHelperProvider;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
@@ -10,11 +10,11 @@ import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
 
 /**
- * Create Cache helper implementation using JSR107 provider.
+ * Default CachingHelperProvider implementation using JSR107 provider.
  *
  * @author jonathan
  */
-public class CacheHelperDefault implements CacheHelper {
+public class CachingHelperProviderDefault implements CachingHelperProvider {
 
 	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,

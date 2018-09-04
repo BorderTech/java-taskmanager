@@ -5,14 +5,14 @@ import javax.cache.configuration.Configuration;
 import javax.cache.expiry.Duration;
 
 /**
- * Create Cache helper based on JSR 107.
+ * Caching helper provider based on JSR 107.
  * <p>
  * Allows projects to provide a different mechanism for creating their cache requirements.
  * </p>
  *
  * @author jonathan
  */
-public interface CacheHelper {
+public interface CachingHelperProvider {
 
 	/**
 	 * Create a cache with the specified duration.
