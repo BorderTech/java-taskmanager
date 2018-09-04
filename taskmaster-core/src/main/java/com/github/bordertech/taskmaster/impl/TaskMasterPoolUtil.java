@@ -1,4 +1,4 @@
-package com.github.bordertech.taskmaster.pool;
+package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.config.Config;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public final class TaskMasterPoolUtil {
 	 * @param pool the pool name to create
 	 * @return the executor service
 	 */
-	public static ExecutorService buildPool(final String pool) {
+	private static ExecutorService buildPool(final String pool) {
 		// TODO Logging and performance parameters
 		// http://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
 
