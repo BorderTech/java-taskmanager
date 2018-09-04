@@ -38,17 +38,10 @@
 			<artifactId>cache-api</artifactId>
 		</dependency>
 
-		<!-- Config -->
+		<!-- Didums Injection -->
 		<dependency>
-			<groupId>com.github.bordertech.config</groupId>
-			<artifactId>config</artifactId>
-		</dependency>
-
-		<!-- Injection interface. JSR 330 -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<scope>provided</scope>
+			<groupId>com.github.bordertech.didums</groupId>
+			<artifactId>didums-core</artifactId>
 		</dependency>
 
 		<!-- Servlet Interface -->

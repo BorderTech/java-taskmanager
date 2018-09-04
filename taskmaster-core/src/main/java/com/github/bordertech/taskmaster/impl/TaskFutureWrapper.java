@@ -1,10 +1,9 @@
 package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.config.Config;
-import com.github.bordertech.didums.Didums;
 import com.github.bordertech.taskmaster.TaskFuture;
-import com.github.bordertech.taskmaster.TaskMasterException;
-import com.github.bordertech.taskmaster.cache.CacheHelper;
+import com.github.bordertech.taskmaster.cache.CachingHelper;
+import com.github.bordertech.taskmaster.exception.TaskMasterException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -24,8 +23,6 @@ import javax.cache.expiry.Duration;
  */
 public class TaskFutureWrapper<T> implements TaskFuture<T> {
 
-	private static final CacheHelper CACHE_HELPER = Didums.getService(CacheHelper.class);
-
 	private static final Cache<String, Future> CACHE;
 
 	private final String id = UUID.randomUUID().toString();
@@ -42,7 +39,7 @@ public class TaskFutureWrapper<T> implements TaskFuture<T> {
 		config.setStoreByValue(false);
 
 		// Create Cache
-		CACHE = CACHE_HELPER.getOrCreateCache("bordertech-tm-future-task", String.class, Future.class, config);
+		CACHE = CachingHelper.getProvider().getOrCreateCache("bordertech-tm-future-task", String.class, Future.class, config);
 	}
 
 	/**

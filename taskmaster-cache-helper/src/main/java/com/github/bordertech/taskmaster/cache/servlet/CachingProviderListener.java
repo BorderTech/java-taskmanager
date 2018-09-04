@@ -17,6 +17,7 @@ public class CachingProviderListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent sce) {
+		// TODO Include this in CacheHelperProvider Interface
 		CachingProvider provider = Caching.getCachingProvider();
 		if (provider != null && !provider.getCacheManager().isClosed()) {
 			provider.getCacheManager().close();

@@ -1,4 +1,4 @@
 /**
- * Concurrent Task Master Interfaces.
+ * Concurrent TaskMaster API.
  */
 package com.github.bordertech.taskmaster;

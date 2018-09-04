@@ -1,7 +1,7 @@
 package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.taskmaster.TaskFuture;
-import com.github.bordertech.taskmaster.TaskMasterException;
+import com.github.bordertech.taskmaster.exception.TaskMasterException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;

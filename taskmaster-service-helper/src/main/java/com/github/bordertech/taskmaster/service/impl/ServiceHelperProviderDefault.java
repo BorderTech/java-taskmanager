@@ -1,11 +1,10 @@
 package com.github.bordertech.taskmaster.service.impl;
 
 import com.github.bordertech.config.Config;
-import com.github.bordertech.didums.Didums;
-import com.github.bordertech.taskmaster.RejectedTaskException;
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.TaskMaster;
-import com.github.bordertech.taskmaster.cache.CacheHelper;
+import com.github.bordertech.taskmaster.cache.CachingHelper;
+import com.github.bordertech.taskmaster.exception.RejectedTaskException;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.ServiceAction;
 import com.github.bordertech.taskmaster.service.exception.AsyncServiceException;
@@ -31,7 +30,7 @@ import javax.inject.Singleton;
  * @since 1.0.0
  */
 @Singleton
-public final class ServiceHelperDefault extends AbstractServiceHelper {
+public final class ServiceHelperProviderDefault extends AbstractServiceHelperProvider {
 
 	private static final String DEFAULT_RESULT_CACHE_NAME = "taskmaster-resultholder-default";
 	private static final Long DEFAULT_RESULT_HOLDER_DURATION_SECONDS
@@ -42,9 +41,6 @@ public final class ServiceHelperDefault extends AbstractServiceHelper {
 	private static final Long DEFAULT_PROCESSING_DURATION_SECONDS
 			= Config.getInstance().getLong("bordertech.taskmaster.service.processing.cache.duration", Long.valueOf("300"));
 	private static final Duration DEFAULT_PROCESSING_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_PROCESSING_DURATION_SECONDS);
-
-	private static final TaskMaster TASK_MASTER = Didums.getService(TaskMaster.class);
-	private static final CacheHelper CACHE_HELPER = Didums.getService(CacheHelper.class);
 
 	@Override
 	public Cache<String, ResultHolder> getDefaultResultHolderCache() {
@@ -58,7 +54,7 @@ public final class ServiceHelperDefault extends AbstractServiceHelper {
 
 	@Override
 	public Cache<String, ResultHolder> getResultHolderCache(final String name, final Duration duration) {
-		return CACHE_HELPER.getOrCreateCache(name, String.class, ResultHolder.class, duration);
+		return CachingHelper.getProvider().getOrCreateCache(name, String.class, ResultHolder.class, duration);
 	}
 
 	@Override
@@ -149,7 +145,7 @@ public final class ServiceHelperDefault extends AbstractServiceHelper {
 		// Processing key
 		String processingKey = getProcessingKey(cache, cacheKey);
 		try {
-			TaskFuture future = TASK_MASTER.submit(task, result, pool);
+			TaskFuture future = TaskMaster.getProvider().submit(task, result, pool);
 			// Cache the future
 			getProcessingCache().put(processingKey, future);
 		} catch (RejectedTaskException e) {
@@ -169,7 +165,7 @@ public final class ServiceHelperDefault extends AbstractServiceHelper {
 	 * @return the processing cache instance
 	 */
 	protected Cache<String, TaskFuture> getProcessingCache() {
-		return CACHE_HELPER.getOrCreateCache(DEFAULT_PROCESSING_CACHE_NAME, String.class, TaskFuture.class, DEFAULT_PROCESSING_DURATION);
+		return CachingHelper.getProvider().getOrCreateCache(DEFAULT_PROCESSING_CACHE_NAME, String.class, TaskFuture.class, DEFAULT_PROCESSING_DURATION);
 	}
 
 	/**

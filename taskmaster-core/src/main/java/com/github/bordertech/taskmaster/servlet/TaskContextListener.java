@@ -1,6 +1,5 @@
 package com.github.bordertech.taskmaster.servlet;
 
-import com.github.bordertech.didums.Didums;
 import com.github.bordertech.taskmaster.TaskMaster;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -28,8 +27,6 @@ import javax.servlet.ServletContextListener;
  */
 public class TaskContextListener implements ServletContextListener {
 
-	private static final TaskMaster TASK_MASTER = Didums.getService(TaskMaster.class);
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -44,6 +41,6 @@ public class TaskContextListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(final ServletContextEvent servletContextEvent) {
 		// Shutdown the task master
-		TASK_MASTER.shutdown();
+		TaskMaster.getProvider().shutdown();
 	}
 }
