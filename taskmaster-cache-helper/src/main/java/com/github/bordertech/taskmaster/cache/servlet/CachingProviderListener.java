@@ -1,7 +1,6 @@
 package com.github.bordertech.taskmaster.cache.servlet;
 
-import javax.cache.Caching;
-import javax.cache.spi.CachingProvider;
+import com.github.bordertech.taskmaster.cache.CachingHelper;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -17,11 +16,7 @@ public class CachingProviderListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent sce) {
-		// TODO Include this in CacheHelperProvider Interface
-		CachingProvider provider = Caching.getCachingProvider();
-		if (provider != null && !provider.getCacheManager().isClosed()) {
-			provider.getCacheManager().close();
-		}
+		CachingHelper.getProvider().closeCacheManager();
 	}
 
 }
