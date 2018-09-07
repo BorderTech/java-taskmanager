@@ -39,6 +39,14 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 	}
 
 	@Override
+	public synchronized void closeCacheManager() {
+		CachingProvider provider = Caching.getCachingProvider();
+		if (provider != null && !provider.getCacheManager().isClosed()) {
+			provider.getCacheManager().close();
+		}
+	}
+
+	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,
 			final Class<V> valueClass, final Duration duration) {
 		// Ignore duration

@@ -8,6 +8,7 @@ import javax.cache.configuration.Configuration;
 import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
+import javax.cache.spi.CachingProvider;
 
 /**
  * Default CachingHelperProvider implementation using JSR107 provider.
@@ -15,6 +16,14 @@ import javax.cache.expiry.Duration;
  * @author jonathan
  */
 public class CachingHelperProviderDefault implements CachingHelperProvider {
+
+	@Override
+	public synchronized void closeCacheManager() {
+		CachingProvider provider = Caching.getCachingProvider();
+		if (provider != null && !provider.getCacheManager().isClosed()) {
+			provider.getCacheManager().close();
+		}
+	}
 
 	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,

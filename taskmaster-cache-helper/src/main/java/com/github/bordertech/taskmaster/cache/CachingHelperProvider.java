@@ -15,6 +15,11 @@ import javax.cache.expiry.Duration;
 public interface CachingHelperProvider {
 
 	/**
+	 * Close and release the cache resources.
+	 */
+	void closeCacheManager();
+
+	/**
 	 * Create a cache with the specified duration.
 	 *
 	 * @param name the cache name

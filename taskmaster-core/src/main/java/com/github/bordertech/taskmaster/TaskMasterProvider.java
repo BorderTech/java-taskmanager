@@ -15,11 +15,17 @@ public interface TaskMasterProvider {
 	 * accepted. Invocation has no additional effect if already shut down.
 	 *
 	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
-	 * threads that the caller is not permitted to modify because it does not hold {@link
-	 *         java.lang.RuntimePermission}<tt>("modifyThread")</tt>, or the security manager's <tt>checkAccess</tt> method
-	 * denies access.
+	 * threads that the caller is not permitted to modify because it does not hold permission
 	 */
 	void shutdown();
+
+	/**
+	 * Attempts to stop all actively executing tasks, halts the processing of waiting tasks.
+	 *
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
+	 * threads that the caller is not permitted to modify because it does not hold permission
+	 */
+	void shutdownNow();
 
 	/**
 	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>

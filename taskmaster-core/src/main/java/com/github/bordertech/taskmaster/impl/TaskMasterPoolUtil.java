@@ -1,6 +1,7 @@
 package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.config.Config;
+import com.github.bordertech.taskmaster.exception.TaskMasterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -11,12 +12,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * TaskMaster ExecutorService thread pool utility.
  */
 public final class TaskMasterPoolUtil {
 
+	private static final Log LOGGER = LogFactory.getLog(TaskMasterPoolUtil.class);
 	private static final Map<String, ExecutorService> THREAD_POOLS = new HashMap<>();
 	private static final String TP_PARAM_PREFIX = "bordertech.taskmaster.pool.";
 	private static final int DEFAULT_MAX_THREADS = 20;
@@ -91,10 +95,20 @@ public final class TaskMasterPoolUtil {
 	/**
 	 * Shutdown the thread pools.
 	 */
-	public static void shutdown() {
-		for (ExecutorService exec : THREAD_POOLS.values()) {
-			// TODO This logic needs to be put into TaskMaster
-			exec.shutdownNow();
+	public static void shutdownNow() {
+		boolean error = false;
+		// Shutdown the threads in the pool
+		for (Map.Entry<String, ExecutorService> pools : THREAD_POOLS.entrySet()) {
+			try {
+				pools.getValue().shutdownNow();
+				LOGGER.info("Shutdown thread pool [" + pools.getKey() + "].");
+			} catch (Exception e) {
+				error = true;
+				LOGGER.error("Could not shutdown thread pool [" + pools.getKey() + "]. " + e.getMessage(), e);
+			}
+		}
+		if (error) {
+			throw new TaskMasterException("Errors occured shutdowning thread pools.");
 		}
 	}
 
@@ -110,14 +124,13 @@ public final class TaskMasterPoolUtil {
 		if (pool == null) {
 			throw new IllegalStateException("Pool [" + name + "] has not been defined.");
 		}
-		// TODO This logic needs to be put into TaskMaster
 		// Check if terminated (reactivate)
 		if (pool.isTerminated()) {
-			// TODO LOG Warning and maybe control this via flag
 			// Check not interrupted for some reason (maybe server shutting down)
 			if (Thread.currentThread().isInterrupted()) {
 				throw new IllegalStateException("Pool [" + name + "] has terminated and thread is interrupted.");
 			}
+			LOGGER.info("Thread pool [" + name + "] is terminated. Will be built again.");
 			pool = TaskMasterPoolUtil.buildPool(name);
 			THREAD_POOLS.put(name, pool);
 		}
