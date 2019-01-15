@@ -16,10 +16,6 @@
 
 	<packaging>jar</packaging>
 
-	<properties>
-		<bt.qa.skip>false</bt.qa.skip>
-	</properties>
-
 	<description>
 		Task Master provides a ehcache helper.
 	</description>
