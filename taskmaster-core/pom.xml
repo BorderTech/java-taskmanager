@@ -49,6 +49,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Junit -->
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+		</dependency>
+
 	</dependencies>
 
 </project>
