@@ -43,7 +43,7 @@ public class TaskFutureResult<T> implements TaskFuture<T> {
 	@Override
 	public T get() throws InterruptedException, ExecutionException {
 		if (result instanceof TaskMasterException) {
-			Exception excp = (TaskMasterException) result;
+			TaskMasterException excp = (TaskMasterException) result;
 			throw new ExecutionException("Error processing future. " + excp.getMessage(), excp);
 		}
 		return result;

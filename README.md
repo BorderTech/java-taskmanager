@@ -2,8 +2,10 @@
 Task Master helps run ASYNC tasks.
 
 ## Status
-[![CircleCI](https://circleci.com/gh/BorderTech/java-taskmaster.svg?style=svg)](https://circleci.com/gh/BorderTech/java-taskmaster)
+[![Build Status](https://travis-ci.com/BorderTech/java-taskmaster.svg?branch=master)](https://travis-ci.com/BorderTech/java-taskmaster)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/83bcfdba5e34433894e8b958bdb958a5)](https://www.codacy.com/app/BorderTech/java-taskmaster?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BorderTech/java-taskmaster&amp;utm_campaign=Badge_Grade)
+[![Javadocs](https://www.javadoc.io/badge/com.github.bordertech.taskmaster/taskmaster.svg)](https://www.javadoc.io/doc/com.github.bordertech.taskmaster/taskmaster)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.bordertech.taskmaster/taskmaster.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.bordertech.taskmaster%22%20AND%20a:%22taskmaster%22)
 
 ## What is TaskMaster
 

@@ -4,6 +4,7 @@ import com.github.bordertech.config.Config;
 import java.io.Serializable;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,11 +26,18 @@ public class LogicalThreadPool implements Serializable {
 	private boolean shutdown;
 
 	/**
+	 * Default constructor with default name and no limit to threads.
+	 */
+	public LogicalThreadPool() {
+		this(null, 0);
+	}
+
+	/**
 	 * @param name thread pool name
 	 * @param max the maximum threads. Zero means no limit.
 	 */
 	public LogicalThreadPool(final String name, final int max) {
-		this.name = name == null ? "default" : name;
+		this.name = StringUtils.isEmpty(name) ? "default" : name;
 		this.max = max > 0 ? max : 0;
 		this.semaphore = new Semaphore(this.max, true);
 	}
