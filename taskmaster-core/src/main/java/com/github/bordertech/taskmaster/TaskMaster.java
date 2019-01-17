@@ -23,17 +23,7 @@ import com.github.bordertech.taskmaster.impl.TaskMasterProviderExecutorService;
  */
 public final class TaskMaster {
 
-	private static final TaskMasterProvider PROVIDER;
-
-	static {
-		// Check if instance defined
-		if (Didums.hasService(TaskMasterProvider.class)) {
-			PROVIDER = Didums.getService(TaskMasterProvider.class);
-		} else {
-			// Default Implementation
-			PROVIDER = new TaskMasterProviderExecutorService();
-		}
-	}
+	private static final TaskMasterProvider PROVIDER = Didums.getService(TaskMasterProvider.class, TaskMasterProviderExecutorService.class);
 
 	/**
 	 * Private constructor.
