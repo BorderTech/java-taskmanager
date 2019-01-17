@@ -5,7 +5,7 @@
 	<groupId>com.github.bordertech.taskmaster</groupId>
 	<name>taskmaster-parent</name>
 	<artifactId>taskmaster-parent</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.github.bordertech.common</groupId>
@@ -49,7 +49,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
 				<artifactId>didums-core</artifactId>
-				<version>1.0.0</version>
+				<version>1.0.2</version>
 			</dependency>
 
 			<!-- Injection interface. JSR 330 -->
@@ -63,7 +63,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.config</groupId>
 				<artifactId>config</artifactId>
-				<version>1.0.1</version>
+				<version>1.0.2</version>
 			</dependency>
 
 			<!-- SLF4J Logging -->
