@@ -8,8 +8,6 @@ import javax.cache.expiry.Duration;
 
 /**
  * Service invocation helper provider.
- *
- * @author jonathan
  */
 public interface ServiceHelperProvider {
 
