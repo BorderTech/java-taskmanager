@@ -13,17 +13,7 @@ import com.github.bordertech.taskmaster.cache.impl.CachingHelperProviderDefault;
  */
 public final class CachingHelper {
 
-	private static final CachingHelperProvider PROVIDER;
-
-	static {
-		// Check if instance defined
-		if (Didums.hasService(CachingHelperProvider.class)) {
-			PROVIDER = Didums.getService(CachingHelperProvider.class);
-		} else {
-			// Default Implementation
-			PROVIDER = new CachingHelperProviderDefault();
-		}
-	}
+	private static final CachingHelperProvider PROVIDER = Didums.getService(CachingHelperProvider.class, CachingHelperProviderDefault.class);
 
 	/**
 	 * Private constructor.
