@@ -5,7 +5,7 @@
 	<groupId>com.github.bordertech.taskmaster</groupId>
 	<name>taskmaster-parent</name>
 	<artifactId>taskmaster-parent</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 
 	<parent>
 		<groupId>com.github.bordertech.common</groupId>
@@ -29,7 +29,7 @@
 		<url>https://github.com/bordertech/java-taskmaster</url>
 		<connection>scm:git:https://github.com/bordertech/java-taskmaster.git</connection>
 		<developerConnection>scm:git:https://github.com/bordertech/java-taskmaster.git</developerConnection>
-		<tag>java-taskmaster-1.0.0</tag>
+		<tag>taskmaster-parent-1.0.2</tag>
 	</scm>
 
 	<issueManagement>
