@@ -5,12 +5,12 @@
 	<groupId>com.github.bordertech.taskmaster</groupId>
 	<name>taskmaster-service-helper</name>
 	<artifactId>taskmaster-service-helper</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.github.bordertech.taskmaster</groupId>
 		<artifactId>taskmaster-parent</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.4-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
