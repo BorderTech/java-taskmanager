@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.github.bordertech.common</groupId>
 		<artifactId>qa-parent</artifactId>
-		<version>1.0.10</version>
+		<version>1.0.11</version>
 	</parent>
 
 	<packaging>pom</packaging>
@@ -49,7 +49,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
 				<artifactId>didums-core</artifactId>
-				<version>1.0.2</version>
+				<version>1.0.3</version>
 			</dependency>
 
 			<!-- Injection interface. JSR 330 -->
@@ -63,7 +63,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.config</groupId>
 				<artifactId>config</artifactId>
-				<version>1.0.2</version>
+				<version>1.0.3</version>
 			</dependency>
 
 			<!-- SLF4J Logging -->
@@ -77,14 +77,14 @@
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
-				<version>1.1.1</version>
+				<version>1.2</version>
 			</dependency>
 
 			<!-- Caching API. -->
 			<dependency>
 				<groupId>javax.cache</groupId>
 				<artifactId>cache-api</artifactId>
-				<version>1.0.0</version>
+				<version>1.1.0</version>
 			</dependency>
 
 			<!-- Servlet Interface -->
@@ -98,7 +98,7 @@
 			<dependency>
 				<groupId>org.ehcache</groupId>
 				<artifactId>ehcache</artifactId>
-				<version>3.5.2</version>
+				<version>3.6.3</version>
 			</dependency>
 
 			<!-- Common Lang3 -->
