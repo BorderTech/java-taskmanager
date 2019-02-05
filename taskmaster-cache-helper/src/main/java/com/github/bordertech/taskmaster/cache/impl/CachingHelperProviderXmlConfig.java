@@ -4,6 +4,7 @@ import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.cache.CachingHelperProvider;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
@@ -30,7 +31,11 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 		LOGGER.info("Loading cache config [" + config + "].");
 		URI uri;
 		try {
-			uri = CachingHelperProviderXmlConfig.class.getResource(config).toURI();
+			URL url = CachingHelperProviderXmlConfig.class.getResource(config);
+			if (url == null) {
+				throw new IllegalStateException("Could not find cache config [" + config + "].");
+			}
+			uri = url.toURI();
 		} catch (URISyntaxException e) {
 			throw new IllegalStateException("Could not load cache config [" + config + "]." + e.getMessage(), e);
 		}

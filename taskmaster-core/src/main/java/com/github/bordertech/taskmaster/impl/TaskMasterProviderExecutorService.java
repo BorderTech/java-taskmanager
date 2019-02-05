@@ -41,9 +41,6 @@ public class TaskMasterProviderExecutorService implements TaskMasterProvider {
 		if (result == null) {
 			throw new IllegalArgumentException("Result cannot be null");
 		}
-		if (pool == null) {
-			throw new IllegalArgumentException("Pool cannot be null");
-		}
 		// Get the executor
 		ExecutorService exec = getPool(pool);
 		// Submit the task
