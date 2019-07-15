@@ -3,8 +3,10 @@ Task Master helps run ASYNC tasks.
 
 ## Status
 [![Build Status](https://travis-ci.com/BorderTech/java-taskmaster.svg?branch=master)](https://travis-ci.com/BorderTech/java-taskmaster)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bordertech-java-taskmaster&metric=alert_status)](https://sonarcloud.io/dashboard?id=bordertech-java-taskmaster)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=bordertech-java-taskmaster&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=bordertech-java-taskmaster)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bordertech-java-taskmaster&metric=coverage)](https://sonarcloud.io/dashboard?id=bordertech-java-taskmaster)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/83bcfdba5e34433894e8b958bdb958a5)](https://www.codacy.com/app/BorderTech/java-taskmaster?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BorderTech/java-taskmaster&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/83bcfdba5e34433894e8b958bdb958a5)](https://www.codacy.com/app/BorderTech/java-taskmaster?utm_source=github.com&utm_medium=referral&utm_content=BorderTech/java-taskmaster&utm_campaign=Badge_Coverage)
 [![Javadocs](https://www.javadoc.io/badge/com.github.bordertech.taskmaster/taskmaster-core.svg)](https://www.javadoc.io/doc/com.github.bordertech.taskmaster/taskmaster-core)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.bordertech.taskmaster/taskmaster-core.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.bordertech.taskmaster%22%20AND%20a:%22taskmaster-core%22)
 

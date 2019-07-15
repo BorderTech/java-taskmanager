@@ -20,6 +20,10 @@
 		Task Master allows a Runnable task to be submitted for execution and returns a Future representing that task.
 	</description>
 
+	<properties>
+		<spotbugs.excludeFilterFile>${basedir}/spotbugs-exclude-filter.xml</spotbugs.excludeFilterFile>
+	</properties>
+
 	<dependencies>
 
 		<!-- TaskMaster Cache Helper -->
