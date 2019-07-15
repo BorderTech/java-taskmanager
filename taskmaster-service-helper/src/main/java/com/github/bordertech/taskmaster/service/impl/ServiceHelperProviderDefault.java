@@ -103,7 +103,11 @@ public final class ServiceHelperProviderDefault extends AbstractServiceHelperPro
 		ProcessingMutableResult serviceResult;
 		try {
 			serviceResult = future.get();
-		} catch (InterruptedException | ExecutionException e) {
+		} catch (InterruptedException e) {
+			// Restore interrupted state...
+			Thread.currentThread().interrupt();
+			throw new AsyncServiceException("Getting result from Future but thread was interrupted. " + e.getMessage(), e);
+		} catch (ExecutionException e) {
 			throw new AsyncServiceException("Could not get result from the future. " + e.getMessage(), e);
 		}
 		ResultHolder result;
