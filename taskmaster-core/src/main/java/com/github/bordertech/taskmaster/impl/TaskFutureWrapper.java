@@ -39,7 +39,7 @@ public class TaskFutureWrapper<T> implements TaskFuture<T> {
 		config.setStoreByValue(false);
 
 		// Create Cache
-		CACHE = CachingHelper.getProvider().getOrCreateCache("bordertech-tm-future-task", String.class, Future.class, config);
+		CACHE = CachingHelper.getOrCreateCache("bordertech-tm-future-task", String.class, Future.class, config);
 	}
 
 	/**

@@ -52,32 +52,23 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 	}
 
 	@Override
+	public <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+		// Return the pre configured cache
+		return MANAGER.getCache(name, keyClass, valueClass);
+	}
+
+	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,
 			final Class<V> valueClass, final Duration duration) {
 		// Ignore duration
-		return handleGetCache(name, keyClass, valueClass);
+		return getOrCreateCache(name, keyClass, valueClass);
 	}
 
 	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,
 			final Class<V> valueClass, final Configuration<K, V> config) {
 		// Ignore config
-		return handleGetCache(name, keyClass, valueClass);
-	}
-
-	/**
-	 * Get the pre-configured cache.
-	 *
-	 * @param name the cache name
-	 * @param keyClass the cache key class
-	 * @param valueClass the cache entry class
-	 * @return the cache instance
-	 * @param <K> the cache key type
-	 * @param <V> the cache entry type
-	 */
-	protected synchronized <K, V> Cache<K, V> handleGetCache(final String name, final Class<K> keyClass,
-			final Class<V> valueClass) {
-		return MANAGER.getCache(name, keyClass, valueClass);
+		return getOrCreateCache(name, keyClass, valueClass);
 	}
 
 	/**

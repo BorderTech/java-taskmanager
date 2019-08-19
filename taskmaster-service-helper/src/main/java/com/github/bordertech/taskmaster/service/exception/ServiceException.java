@@ -6,7 +6,7 @@ package com.github.bordertech.taskmaster.service.exception;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class ServiceException extends RuntimeException {
+public class ServiceException extends Exception {
 
 	/**
 	 * @param message the exception message

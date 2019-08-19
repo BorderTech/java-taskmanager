@@ -40,9 +40,8 @@ public class CachingHelperProviderEhCache extends CachingHelperProviderXmlConfig
 	}
 
 	@Override
-	protected synchronized <K, V> Cache<K, V> handleGetCache(final String name, final Class<K> keyClass,
-			final Class<V> valueClass) {
-		Cache<K, V> cache = super.handleGetCache(name, keyClass, valueClass);
+	public <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+		Cache<K, V> cache = super.getOrCreateCache(name, keyClass, valueClass);
 		if (!caches.containsKey(name)) {
 			configCachePropertyValues(name, cache);
 			caches.put(name, new ImmutableTriple(name, keyClass, valueClass));

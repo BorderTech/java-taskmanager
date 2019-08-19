@@ -20,6 +20,18 @@ public interface CachingHelperProvider {
 	void closeCacheManager();
 
 	/**
+	 * Create a cache with the default configuration.
+	 *
+	 * @param name the cache name
+	 * @param keyClass the key class type
+	 * @param valueClass the value class type
+	 * @param <K> the cache entry key type
+	 * @param <V> the cache entry value value
+	 * @return the cache instance
+	 */
+	<K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass);
+
+	/**
 	 * Create a cache with the specified duration.
 	 *
 	 * @param name the cache name

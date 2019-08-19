@@ -13,75 +13,33 @@ import java.io.Serializable;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class ResultHolder<M extends Serializable, T extends Serializable> implements Serializable {
-
-	private final M metaData;
-	private final T result;
-	private final Exception exception;
-
-	/**
-	 * Hold a successful result.
-	 *
-	 * @param metaData the service meta data
-	 * @param result the service result
-	 */
-	public ResultHolder(final M metaData, final T result) {
-		this.metaData = metaData;
-		this.result = result;
-		this.exception = null;
-	}
-
-	/**
-	 * Hold an exception.
-	 *
-	 * @param metaData the service meta data
-	 * @param exception the exception that occurred
-	 */
-	public ResultHolder(final M metaData, final Exception exception) {
-		// Exception must be provided
-		if (exception == null) {
-			throw new IllegalArgumentException("An exception must be provided.");
-		}
-		this.metaData = metaData;
-		this.result = null;
-		this.exception = exception;
-	}
+public interface ResultHolder<M extends Serializable, T extends Serializable> extends Serializable {
 
 	/**
 	 * @return the meta data for the service call
 	 */
-	public M getMetaData() {
-		return metaData;
-	}
+	M getMetaData();
 
 	/**
 	 * @return the successful result, can be null
 	 */
-	public T getResult() {
-		return result;
-	}
+	T getResult();
 
 	/**
 	 * @return the exception that occurred or null if result was successful
 	 */
-	public Exception getException() {
-		return exception;
-	}
+	Exception getException();
 
 	/**
 	 *
 	 * @return true if the result is an exception
 	 */
-	public boolean isException() {
-		return exception != null;
-	}
+	boolean isException();
 
 	/**
 	 *
 	 * @return true if holding a successful result
 	 */
-	public boolean isResult() {
-		return exception == null;
-	}
+	boolean isResult();
 
 }

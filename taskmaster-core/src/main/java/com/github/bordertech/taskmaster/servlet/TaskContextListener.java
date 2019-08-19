@@ -41,6 +41,6 @@ public class TaskContextListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(final ServletContextEvent servletContextEvent) {
 		// Shutdown the task master
-		TaskMaster.getProvider().shutdown();
+		TaskMaster.shutdown();
 	}
 }

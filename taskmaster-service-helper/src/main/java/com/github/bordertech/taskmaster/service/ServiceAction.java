@@ -17,7 +17,8 @@ public interface ServiceAction<S extends Serializable, T extends Serializable> {
 	 *
 	 * @param criteria the service criteria
 	 * @return the service response
+	 * @throws Exception if an exception occurs processing the service call
 	 */
-	T service(final S criteria);
+	T service(final S criteria) throws Exception;
 
 }

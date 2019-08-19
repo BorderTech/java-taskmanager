@@ -1,5 +1,6 @@
-package com.github.bordertech.taskmaster.service.exception;
+package com.github.bordertech.taskmaster.service.util;
 
+import com.github.bordertech.taskmaster.service.exception.ServiceException;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 

@@ -1,14 +1,15 @@
 package com.github.bordertech.taskmaster.service.impl;
 
+import com.github.bordertech.taskmaster.service.ResultHolder;
 import java.io.Serializable;
 
 /**
- * Used to hold the service result with the ASync processing cache.
+ * Used to hold the service result with the ASync processing.
  *
  * @param <M> the meta data type
  * @param <T> the result type
  */
-public final class ProcessingMutableResult<M extends Serializable, T extends Serializable> implements Serializable {
+public final class ResultHolderMutable<M extends Serializable, T extends Serializable> implements ResultHolder<M, T> {
 
 	private final M metaData;
 	private T result;
@@ -17,13 +18,14 @@ public final class ProcessingMutableResult<M extends Serializable, T extends Ser
 	/**
 	 * @param metaData the meta data
 	 */
-	public ProcessingMutableResult(final M metaData) {
+	public ResultHolderMutable(final M metaData) {
 		this.metaData = metaData;
 	}
 
 	/**
 	 * @return the meta data
 	 */
+	@Override
 	public M getMetaData() {
 		return metaData;
 	}
@@ -31,6 +33,7 @@ public final class ProcessingMutableResult<M extends Serializable, T extends Ser
 	/**
 	 * @return the polling result
 	 */
+	@Override
 	public T getResult() {
 		return result;
 	}
@@ -46,6 +49,7 @@ public final class ProcessingMutableResult<M extends Serializable, T extends Ser
 	/**
 	 * @return the exception or null if has result
 	 */
+	@Override
 	public Exception getException() {
 		return exception;
 	}
@@ -61,6 +65,7 @@ public final class ProcessingMutableResult<M extends Serializable, T extends Ser
 	/**
 	 * @return true if holding an exception
 	 */
+	@Override
 	public boolean isException() {
 		return exception != null;
 	}
@@ -68,6 +73,7 @@ public final class ProcessingMutableResult<M extends Serializable, T extends Ser
 	/**
 	 * @return true if holding a result
 	 */
+	@Override
 	public boolean isResult() {
 		return !isException();
 	}
