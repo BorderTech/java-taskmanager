@@ -52,7 +52,7 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 	}
 
 	@Override
-	public <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
 		// Return the pre configured cache
 		return MANAGER.getCache(name, keyClass, valueClass);
 	}

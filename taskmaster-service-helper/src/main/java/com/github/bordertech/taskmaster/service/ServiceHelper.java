@@ -39,7 +39,8 @@ public final class ServiceHelper {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action)
+	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(
+			final S criteria, final ServiceAction<S, T> action)
 			throws ServiceException, RejectedServiceException {
 		return PROVIDER.submitAsync(criteria, action, null);
 	}
@@ -56,7 +57,8 @@ public final class ServiceHelper {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action, final String pool)
+	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(
+			final S criteria, final ServiceAction<S, T> action, final String pool)
 			throws ServiceException, RejectedServiceException {
 		return PROVIDER.submitAsync(criteria, action, pool);
 	}
@@ -77,8 +79,8 @@ public final class ServiceHelper {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey)
+	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(
+			final S criteria, final ServiceAction<S, T> action, final Cache<String, ResultHolder> cache, final String cacheKey)
 			throws ServiceException, RejectedServiceException {
 		return PROVIDER.submitAsync(criteria, action, null, cache, cacheKey, false);
 	}
@@ -100,8 +102,8 @@ public final class ServiceHelper {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey, final String pool)
+	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(
+			final S criteria, final ServiceAction<S, T> action, final Cache<String, ResultHolder> cache, final String cacheKey, final String pool)
 			throws ServiceException, RejectedServiceException {
 		return PROVIDER.submitAsync(criteria, action, pool, cache, cacheKey, false);
 	}
@@ -120,8 +122,10 @@ public final class ServiceHelper {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey, final boolean cacheException) throws ServiceException, RejectedServiceException {
+	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(
+			final S criteria, final ServiceAction<S, T> action, final Cache<String, ResultHolder> cache, final String cacheKey,
+			final boolean cacheException)
+			throws ServiceException, RejectedServiceException {
 		return PROVIDER.submitAsync(criteria, action, null, cache, cacheKey, cacheException);
 	}
 
@@ -140,8 +144,10 @@ public final class ServiceHelper {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey, final String pool, final boolean cacheException) throws ServiceException, RejectedServiceException {
+	public static <S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(
+			final S criteria, final ServiceAction<S, T> action, final Cache<String, ResultHolder> cache, final String cacheKey,
+			final String pool, final boolean cacheException)
+			throws ServiceException, RejectedServiceException {
 		return PROVIDER.submitAsync(criteria, action, pool, cache, cacheKey, cacheException);
 	}
 
@@ -175,8 +181,8 @@ public final class ServiceHelper {
 	 * @return the result or null if still processing
 	 * @throws ServiceException exception processing the service call
 	 */
-	public static <S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey)
+	public static <S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(
+			final S criteria, final ServiceAction<S, T> action, final Cache<String, ResultHolder> cache, final String cacheKey)
 			throws ServiceException {
 		return PROVIDER.invokeSync(criteria, action, cache, cacheKey, false);
 	}
@@ -194,8 +200,10 @@ public final class ServiceHelper {
 	 * @return the result or null if still processing
 	 * @throws ServiceException exception processing the service call
 	 */
-	public static <S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey, final boolean cacheException) throws ServiceException {
+	public static <S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(
+			final S criteria, final ServiceAction<S, T> action, final Cache<String, ResultHolder> cache, final String cacheKey,
+			final boolean cacheException)
+			throws ServiceException {
 		return PROVIDER.invokeSync(criteria, action, cache, cacheKey, cacheException);
 	}
 

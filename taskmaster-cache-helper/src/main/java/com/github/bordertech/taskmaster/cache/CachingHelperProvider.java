@@ -29,7 +29,7 @@ public interface CachingHelperProvider {
 	 * @param <V> the cache entry value value
 	 * @return the cache instance
 	 */
-	<K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass);
+	<K, V> Cache<K, V> getOrCreateCache(String name, Class<K> keyClass, Class<V> valueClass);
 
 	/**
 	 * Create a cache with the specified duration.
@@ -42,7 +42,7 @@ public interface CachingHelperProvider {
 	 * @param <V> the cache entry value value
 	 * @return the cache instance
 	 */
-	<K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass, final Duration duration);
+	<K, V> Cache<K, V> getOrCreateCache(String name, Class<K> keyClass, Class<V> valueClass, Duration duration);
 
 	/**
 	 * Create a cache with the specified configuration.
@@ -55,6 +55,6 @@ public interface CachingHelperProvider {
 	 * @param config the cache configuration
 	 * @return the cache instance
 	 */
-	<K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass, final Configuration<K, V> config);
+	<K, V> Cache<K, V> getOrCreateCache(String name, Class<K> keyClass, Class<V> valueClass, Configuration<K, V> config);
 
 }

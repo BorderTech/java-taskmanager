@@ -69,6 +69,7 @@ public class ResultHolderDefault<M extends Serializable, T extends Serializable>
 	/**
 	 * @return the meta data for the service call
 	 */
+	@Override
 	public M getMetaData() {
 		return metaData;
 	}
@@ -76,6 +77,7 @@ public class ResultHolderDefault<M extends Serializable, T extends Serializable>
 	/**
 	 * @return the successful result, can be null
 	 */
+	@Override
 	public T getResult() {
 		return result;
 	}
@@ -83,6 +85,7 @@ public class ResultHolderDefault<M extends Serializable, T extends Serializable>
 	/**
 	 * @return the exception that occurred or null if result was successful
 	 */
+	@Override
 	public Exception getException() {
 		return exception;
 	}
@@ -91,6 +94,7 @@ public class ResultHolderDefault<M extends Serializable, T extends Serializable>
 	 *
 	 * @return true if the result is an exception
 	 */
+	@Override
 	public boolean isException() {
 		return exception != null;
 	}
@@ -99,6 +103,7 @@ public class ResultHolderDefault<M extends Serializable, T extends Serializable>
 	 *
 	 * @return true if holding a successful result
 	 */
+	@Override
 	public boolean isResult() {
 		return exception == null;
 	}

@@ -2,6 +2,7 @@ package com.github.bordertech.taskmaster.impl;
 
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.exception.TaskMasterException;
+import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeoutException;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class TaskFutureResult<T> implements TaskFuture<T> {
+public class TaskFutureResult<T extends Serializable> implements TaskFuture<T> {
 
 	private final T result;
 
@@ -42,16 +43,24 @@ public class TaskFutureResult<T> implements TaskFuture<T> {
 
 	@Override
 	public T get() throws InterruptedException, ExecutionException {
-		if (result instanceof TaskMasterException) {
-			TaskMasterException excp = (TaskMasterException) result;
+		T res = getResult();
+		if (res instanceof TaskMasterException) {
+			TaskMasterException excp = (TaskMasterException) res;
 			throw new ExecutionException("Error processing future. " + excp.getMessage(), excp);
 		}
-		return result;
+		return res;
 	}
 
 	@Override
 	public T get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		return get();
+	}
+
+	/**
+	 * @return the result
+	 */
+	protected T getResult() {
+		return result;
 	}
 
 }

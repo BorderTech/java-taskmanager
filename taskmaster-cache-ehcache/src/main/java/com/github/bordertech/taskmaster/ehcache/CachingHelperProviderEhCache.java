@@ -40,7 +40,7 @@ public class CachingHelperProviderEhCache extends CachingHelperProviderXmlConfig
 	}
 
 	@Override
-	public <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
 		Cache<K, V> cache = super.getOrCreateCache(name, keyClass, valueClass);
 		if (!caches.containsKey(name)) {
 			configCachePropertyValues(name, cache);

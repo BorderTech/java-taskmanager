@@ -11,9 +11,12 @@ import java.io.Serializable;
  */
 public final class ResultHolderMutable<M extends Serializable, T extends Serializable> implements ResultHolder<M, T> {
 
-	private final M metaData;
+	private M metaData;
 	private T result;
 	private Exception exception;
+
+	public ResultHolderMutable() {
+	}
 
 	/**
 	 * @param metaData the meta data
@@ -31,7 +34,14 @@ public final class ResultHolderMutable<M extends Serializable, T extends Seriali
 	}
 
 	/**
-	 * @return the polling result
+	 * @param metaData the meta data
+	 */
+	public void setMetaData(final M metaData) {
+		this.metaData = metaData;
+	}
+
+	/**
+	 * @return the service result
 	 */
 	@Override
 	public T getResult() {

@@ -23,7 +23,7 @@ public interface ServiceHelperProvider {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	<S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action, final String pool)
+	<S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(S criteria, ServiceAction<S, T> action, String pool)
 			throws ServiceException, RejectedServiceException;
 
 	/**
@@ -41,8 +41,8 @@ public interface ServiceHelperProvider {
 	 * @throws ServiceException exception processing the service call
 	 * @throws RejectedServiceException if the task cannot be scheduled for execution
 	 */
-	<S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(final S criteria, final ServiceAction<S, T> action, final String pool,
-			final Cache<String, ResultHolder> cache, final String cacheKey, final boolean cacheException) throws ServiceException, RejectedServiceException;
+	<S extends Serializable, T extends Serializable> TaskFuture<ResultHolder<S, T>> submitAsync(S criteria, ServiceAction<S, T> action, String pool,
+			Cache<String, ResultHolder> cache, String cacheKey, boolean cacheException) throws ServiceException, RejectedServiceException;
 
 	/**
 	 * Invoke a sync service call.
@@ -54,7 +54,7 @@ public interface ServiceHelperProvider {
 	 * @return the task future to check the async process status
 	 * @throws ServiceException exception processing the service call
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(final S criteria, final ServiceAction<S, T> action) throws ServiceException;
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(S criteria, ServiceAction<S, T> action) throws ServiceException;
 
 	/**
 	 * Invoke a sync service call that is cached with option of caching the exception.
@@ -69,7 +69,7 @@ public interface ServiceHelperProvider {
 	 * @return the result or null if still processing
 	 * @throws ServiceException exception processing the service call
 	 */
-	<S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(final S criteria, final ServiceAction<S, T> action,
-			final Cache<String, ResultHolder> cache, final String cacheKey, final boolean cacheException) throws ServiceException;
+	<S extends Serializable, T extends Serializable> ResultHolder<S, T> invokeSync(S criteria, ServiceAction<S, T> action,
+			Cache<String, ResultHolder> cache, String cacheKey, boolean cacheException) throws ServiceException;
 
 }

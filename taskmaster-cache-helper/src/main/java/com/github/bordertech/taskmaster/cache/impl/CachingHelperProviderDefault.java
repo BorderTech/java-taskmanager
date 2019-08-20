@@ -27,7 +27,7 @@ public class CachingHelperProviderDefault implements CachingHelperProvider {
 
 		// Get unit
 		TimeUnit unit;
-		switch (unitType.toLowerCase()) {
+		switch (unitType) {
 			case "d":
 				unit = TimeUnit.DAYS;
 				break;
@@ -52,7 +52,7 @@ public class CachingHelperProviderDefault implements CachingHelperProvider {
 	}
 
 	@Override
-	public <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
 		return getOrCreateCache(name, keyClass, valueClass, getDefaultDuration());
 	}
 

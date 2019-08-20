@@ -17,7 +17,6 @@
 
 	<properties>
 		<bt.qa.skip>false</bt.qa.skip>
-		<dependency-check.skip>true</dependency-check.skip>
 	</properties>
 
 	<description>
@@ -99,7 +98,7 @@
 			<dependency>
 				<groupId>org.ehcache</groupId>
 				<artifactId>ehcache</artifactId>
-				<version>3.6.3</version>
+				<version>3.8.0</version>
 			</dependency>
 
 			<!-- Common Lang3 -->

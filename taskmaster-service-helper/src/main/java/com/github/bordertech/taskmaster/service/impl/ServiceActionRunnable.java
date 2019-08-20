@@ -30,12 +30,33 @@ public class ServiceActionRunnable<S extends Serializable, T extends Serializabl
 	@Override
 	public void run() {
 		try {
-			T resp = action.service(criteria);
+			T resp = getAction().service(getCriteria());
 			result.setResult(resp);
 		} catch (Exception e) {
 			// Check exception is serializable to be held in the cache (sometimes they arent)
 			result.setException(ExceptionUtil.getSerializableException(e));
 		}
+	}
+
+	/**
+	 * @return the service criteria
+	 */
+	protected S getCriteria() {
+		return criteria;
+	}
+
+	/**
+	 * @return the service action
+	 */
+	protected ServiceAction<S, T> getAction() {
+		return action;
+	}
+
+	/**
+	 * @return the result
+	 */
+	protected ResultHolderMutable<S, T> getResult() {
+		return result;
 	}
 
 }
