@@ -1,6 +1,5 @@
 package com.github.bordertech.taskmaster.cache.impl;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.cache.CachingHelperProvider;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,7 +26,7 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 
 	static {
 		// Load cache configfile location (default tm-cache.xml)
-		String config = Config.getInstance().getString("bordertech.taskmaster.cache.config", "/tm-cache.xml");
+		String config = CachingProperties.getConfigXmlLocation();
 		LOGGER.info("Loading cache config [" + config + "].");
 		URI uri;
 		try {

@@ -1,6 +1,5 @@
 package com.github.bordertech.taskmaster.impl;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.cache.CachingHelper;
 import com.github.bordertech.taskmaster.exception.TaskMasterException;
@@ -29,18 +28,21 @@ public class TaskFutureWrapper<T extends Serializable> implements TaskFuture<T> 
 	private final String id = UUID.randomUUID().toString();
 
 	static {
-		// Get default duration
-		Long duration = Config.getInstance().getLong("bordertech.taskmaster.future.cache.duration", Long.valueOf("300"));
+		// Get future task cache name
+		String name = TaskMasterProperties.getFutureTaskCacheName();
+
+		// Get cache duration
+		Duration duration = TaskMasterProperties.getFutureTaskCacheDuration();
 
 		// Setup cache config
 		MutableConfiguration<String, Future> config = new MutableConfiguration<>();
 		config.setTypes(String.class, Future.class);
-		config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.SECONDS, duration)));
+		config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(duration));
 		// No need to serialize the result (Future is not serializable)
 		config.setStoreByValue(false);
 
 		// Create Cache
-		CACHE = CachingHelper.getOrCreateCache("bordertech-tm-future-task", String.class, Future.class, config);
+		CACHE = CachingHelper.getOrCreateCache(name, String.class, Future.class, config);
 	}
 
 	/**

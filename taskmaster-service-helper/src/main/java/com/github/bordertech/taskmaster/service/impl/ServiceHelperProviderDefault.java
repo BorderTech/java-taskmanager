@@ -1,6 +1,5 @@
 package com.github.bordertech.taskmaster.service.impl;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.TaskMaster;
 import com.github.bordertech.taskmaster.cache.CachingHelper;
@@ -12,7 +11,6 @@ import com.github.bordertech.taskmaster.service.ServiceHelperProvider;
 import com.github.bordertech.taskmaster.service.exception.RejectedServiceException;
 import com.github.bordertech.taskmaster.service.exception.ServiceException;
 import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
 import javax.cache.Cache;
 import javax.cache.expiry.Duration;
 import org.apache.commons.logging.Log;
@@ -25,15 +23,15 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 
 	private static final Log LOGGER = LogFactory.getLog(ServiceHelperProviderDefault.class);
 
-	private static final boolean IN_PROGRESS_ENABLED = Config.getInstance().getBoolean("bordertech.taskmaster.service.inprogress.enabled", false);
+	private static final boolean IN_PROGRESS_ENABLED = ServiceHelperProperties.isInProgressEnabled();
 	private static final Cache<String, Boolean> IN_PROGRESS_CACHE;
 
 	static {
 		if (IN_PROGRESS_ENABLED) {
+			String name = ServiceHelperProperties.getInProgressCacheName();
 			// Setup the cache for tracking in progress ASync Cached service calls
-			Long interval = Config.getInstance().getLong("bordertech.taskmaster.service.inprogress.cache.duration", Long.valueOf("300"));
-			Duration duration = new Duration(TimeUnit.SECONDS, interval);
-			IN_PROGRESS_CACHE = CachingHelper.getOrCreateCache("taskmaster-inprogress-default", String.class, Boolean.class, duration);
+			Duration duration = ServiceHelperProperties.getInProgressCacheDuration();
+			IN_PROGRESS_CACHE = CachingHelper.getOrCreateCache(name, String.class, Boolean.class, duration);
 		} else {
 			IN_PROGRESS_CACHE = null;
 		}
@@ -222,10 +220,11 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 	}
 
 	/**
-	 * Flag if tracking in progress ASync cached service calls which helps avoid multiple calls for the same service call.
+	 * Flag if tracking in progress ASync cached service calls which helps avoid multiple calls for the same service
+	 * call.
 	 * <p>
-	 * It only makes sense to track cached ASync calls as cached results are expected to be called multiple times and Sync calls require the result
-	 * immediately anyway.
+	 * It only makes sense to track cached ASync calls as cached results are expected to be called multiple times and
+	 * Sync calls require the result immediately anyway.
 	 * </p>
 	 *
 	 * @return true if tracking in progress ASync cached service calls

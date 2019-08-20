@@ -31,7 +31,7 @@ public class TaskMasterProviderExecutorService implements TaskMasterProvider {
 
 	@Override
 	public <T extends Serializable> TaskFuture<T> submit(final Runnable task, final T result) throws RejectedTaskException {
-		return submit(task, result, TaskMasterPoolUtil.DEFAULT_POOL);
+		return submit(task, result, TaskMasterProperties.getDefaultThreadPoolName());
 	}
 
 	@Override

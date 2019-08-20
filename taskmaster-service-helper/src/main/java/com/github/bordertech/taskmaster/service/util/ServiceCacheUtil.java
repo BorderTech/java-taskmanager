@@ -1,9 +1,8 @@
 package com.github.bordertech.taskmaster.service.util;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.cache.CachingHelper;
 import com.github.bordertech.taskmaster.service.ResultHolder;
-import java.util.concurrent.TimeUnit;
+import com.github.bordertech.taskmaster.service.impl.ServiceHelperProperties;
 import javax.cache.Cache;
 import javax.cache.expiry.Duration;
 
@@ -14,11 +13,6 @@ import javax.cache.expiry.Duration;
  * </p>
  */
 public final class ServiceCacheUtil {
-
-	private static final String DEFAULT_RESULT_CACHE_NAME = "taskmaster-resultholder-default";
-	private static final Long DEFAULT_RESULT_HOLDER_DURATION_SECONDS
-			= Config.getInstance().getLong("bordertech.taskmaster.service.resultholder.cache.duration", Long.valueOf("1800"));
-	private static final Duration DEFAULT_RESULT_DURATION = new Duration(TimeUnit.SECONDS, DEFAULT_RESULT_HOLDER_DURATION_SECONDS);
 
 	/**
 	 * Private constructor.
@@ -33,7 +27,9 @@ public final class ServiceCacheUtil {
 	 * @return the default result holder cache instance
 	 */
 	public static Cache<String, ResultHolder> getDefaultResultHolderCache() {
-		return getResultHolderCache(DEFAULT_RESULT_CACHE_NAME, DEFAULT_RESULT_DURATION);
+		String name = ServiceHelperProperties.getDefaultResultHolderCacheName();
+		Duration duration = ServiceHelperProperties.getDefaultResultHolderCacheDuration();
+		return getResultHolderCache(name, duration);
 	}
 
 	/**
@@ -43,7 +39,8 @@ public final class ServiceCacheUtil {
 	 * @return the cache instance
 	 */
 	public static Cache<String, ResultHolder> getResultHolderCache(final String name) {
-		return getResultHolderCache(name, DEFAULT_RESULT_DURATION);
+		Duration duration = ServiceHelperProperties.getResultHolderCacheDuration(name);
+		return getResultHolderCache(name, duration);
 	}
 
 	/**
