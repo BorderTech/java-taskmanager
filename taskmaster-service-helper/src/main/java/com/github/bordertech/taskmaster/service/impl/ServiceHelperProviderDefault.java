@@ -46,7 +46,7 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 
 		// Check action provided
 		if (action == null) {
-			throw new IllegalArgumentException("No service action has been provided. ");
+			throw new IllegalArgumentException("No service action has been provided for submit async call.");
 		}
 
 		// Setup the bean to hold the service result
@@ -67,28 +67,14 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 
 		// Check action provided
 		if (action == null) {
-			throw new IllegalArgumentException("No service action has been provided. ");
+			throw new IllegalArgumentException("No service action has been provided for submit async cached call.");
 		}
 
-		// Check cache and cache key provided
-		if (cache == null) {
-			throw new IllegalArgumentException("A cache must be provided for async processing.");
-		}
-		if (cacheKey == null) {
-			throw new IllegalArgumentException("A cache key must be provided for async processing. ");
-		}
-
-		// Maybe already in the result cache
-		ResultHolder cached = cache.get(cacheKey);
+		// Check already in cache
+		ResultHolder cached = checkCache(cache, cacheKey, cacheException);
 		if (cached != null) {
-			// Check for a cached exception
-			if (cached.isException() && !cacheException) {
-				// Invalidate cache and continue onto service call
-				cache.remove(cacheKey);
-			} else {
-				LOGGER.debug(buildCacheMessagePrefix(cache, cacheKey) + "Async service already in cache so Future will hold the result.");
-				return new TaskFutureResult<>(cached);
-			}
+			LOGGER.debug(buildCacheMessagePrefix(cache, cacheKey) + "Async service already in cache so Future will hold the result.");
+			return new TaskFutureResult<>(cached);
 		}
 
 		// Check already in progress (if tracking enabled)
@@ -134,7 +120,7 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 
 		// Check action provided
 		if (action == null) {
-			throw new IllegalArgumentException("No service action has been provided. ");
+			throw new IllegalArgumentException("No service action has been provided for invoke sync call.");
 		}
 
 		// Do service call
@@ -151,25 +137,11 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 			final Cache<String, ResultHolder> cache, final String cacheKey, final boolean cacheException)
 			throws ServiceException {
 
-		// Check cache and cache key provided
-		if (cache == null) {
-			throw new IllegalArgumentException("A cache must be provided.");
-		}
-		if (cacheKey == null) {
-			throw new IllegalArgumentException("A cache key must be provided.");
-		}
-
-		// Check cache for result
-		ResultHolder cached = cache.get(cacheKey);
+		// Check already in cache
+		ResultHolder cached = checkCache(cache, cacheKey, cacheException);
 		if (cached != null) {
-			// Check for a cached exception
-			if (cached.isException() && !cacheException) {
-				// Invalidate cache and continue onto service call
-				cache.remove(cacheKey);
-			} else {
-				LOGGER.debug(buildCacheMessagePrefix(cache, cacheKey) + "Cached service call already in cache.");
-				return cached;
-			}
+			LOGGER.debug(buildCacheMessagePrefix(cache, cacheKey) + "Cached service already in cache.");
+			return cached;
 		}
 
 		// Do service call
@@ -215,6 +187,38 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 		} catch (Exception e) {
 			throw new RejectedServiceException("Could not start a thread to process task action. " + e.getMessage(), e);
 		}
+	}
+
+	/**
+	 * Check if service result is already in the cache.
+	 *
+	 * @param <S> the criteria type
+	 * @param <T> the response type
+	 * @param cache the result holder cache
+	 * @param cacheKey the key for the result holder
+	 * @param cacheException true if cache exception
+	 * @return the cached result or null if not in cache
+	 */
+	protected <S extends Serializable, T extends Serializable> ResultHolder<S, T> checkCache(
+			final Cache<String, ResultHolder> cache, final String cacheKey, final boolean cacheException) {
+
+		// Check cache and cache key provided
+		if (cache == null) {
+			throw new IllegalArgumentException("A cache must be provided.");
+		}
+		if (cacheKey == null) {
+			throw new IllegalArgumentException("A cache key must be provided.");
+		}
+
+		// Check cache for result
+		ResultHolder cached = cache.get(cacheKey);
+		// Check for a cached exception
+		if (cached != null && cached.isException() && !cacheException) {
+			// Invalidate cache and continue onto service call
+			cache.remove(cacheKey);
+			cached = null;
+		}
+		return cached;
 	}
 
 	/**
