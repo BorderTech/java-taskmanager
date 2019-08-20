@@ -11,7 +11,6 @@ import com.github.bordertech.taskmaster.service.ServiceAction;
 import com.github.bordertech.taskmaster.service.ServiceHelperProvider;
 import com.github.bordertech.taskmaster.service.exception.RejectedServiceException;
 import com.github.bordertech.taskmaster.service.exception.ServiceException;
-import com.github.bordertech.taskmaster.service.util.ExceptionUtil;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 import javax.cache.Cache;
@@ -143,7 +142,7 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 			T resp = action.service(criteria);
 			return new ResultHolderDefault<>(criteria, resp);
 		} catch (Exception e) {
-			return new ResultHolderDefault(criteria, ExceptionUtil.getSerializableException(e));
+			return new ResultHolderDefault(criteria, e);
 		}
 	}
 

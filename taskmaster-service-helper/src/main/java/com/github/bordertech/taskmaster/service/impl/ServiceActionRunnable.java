@@ -1,7 +1,6 @@
 package com.github.bordertech.taskmaster.service.impl;
 
 import com.github.bordertech.taskmaster.service.ServiceAction;
-import com.github.bordertech.taskmaster.service.util.ExceptionUtil;
 import java.io.Serializable;
 
 /**
@@ -33,8 +32,7 @@ public class ServiceActionRunnable<S extends Serializable, T extends Serializabl
 			T resp = getAction().service(getCriteria());
 			result.setResult(resp);
 		} catch (Exception e) {
-			// Check exception is serializable to be held in the cache (sometimes they arent)
-			result.setException(ExceptionUtil.getSerializableException(e));
+			result.setException(e);
 		}
 	}
 

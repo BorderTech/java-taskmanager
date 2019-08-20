@@ -1,6 +1,7 @@
 package com.github.bordertech.taskmaster.service.impl;
 
 import com.github.bordertech.taskmaster.service.ResultHolder;
+import com.github.bordertech.taskmaster.service.util.ExceptionUtil;
 import java.io.Serializable;
 
 /**
@@ -63,7 +64,8 @@ public class ResultHolderDefault<M extends Serializable, T extends Serializable>
 		}
 		this.metaData = metaData;
 		this.result = null;
-		this.exception = exception;
+		// Check exception is serializable (sometimes they arent)
+		this.exception = ExceptionUtil.getSerializableException(exception);
 	}
 
 	/**
