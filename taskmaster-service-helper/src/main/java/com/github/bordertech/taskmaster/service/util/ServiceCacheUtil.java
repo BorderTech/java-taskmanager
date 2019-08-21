@@ -1,6 +1,7 @@
 package com.github.bordertech.taskmaster.service.util;
 
 import com.github.bordertech.taskmaster.cache.CachingHelper;
+import com.github.bordertech.taskmaster.cache.impl.CachingProperties;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.impl.ServiceHelperProperties;
 import javax.cache.Cache;
@@ -11,6 +12,11 @@ import javax.cache.expiry.Duration;
  * <p>
  * This helper provides a default cache or projects can create caches with assigned names.
  * </p>
+ * <p>
+ * The duration of the caches can be overridden by setting the runtime properties for {@link CachingProperties}.
+ * </p>
+ *
+ * @see CachingProperties
  */
 public final class ServiceCacheUtil {
 
@@ -27,9 +33,7 @@ public final class ServiceCacheUtil {
 	 * @return the default result holder cache instance
 	 */
 	public static Cache<String, ResultHolder> getDefaultResultHolderCache() {
-		String name = ServiceHelperProperties.getDefaultResultHolderCacheName();
-		Duration duration = ServiceHelperProperties.getDefaultResultHolderCacheDuration();
-		return getResultHolderCache(name, duration);
+		return getResultHolderCache(ServiceHelperProperties.RESULT_HOLDER_CACHE_NAME);
 	}
 
 	/**
@@ -39,8 +43,7 @@ public final class ServiceCacheUtil {
 	 * @return the cache instance
 	 */
 	public static Cache<String, ResultHolder> getResultHolderCache(final String name) {
-		Duration duration = ServiceHelperProperties.getResultHolderCacheDuration(name);
-		return getResultHolderCache(name, duration);
+		return getResultHolderCache(name, ServiceHelperProperties.getResultHolderCacheDuration());
 	}
 
 	/**

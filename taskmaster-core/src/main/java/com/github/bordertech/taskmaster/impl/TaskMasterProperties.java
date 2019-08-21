@@ -11,6 +11,12 @@ import org.apache.commons.configuration.Configuration;
  */
 public final class TaskMasterProperties {
 
+	/**
+	 * Future task cache name.
+	 */
+	public static final String FUTURE_TASK_CACHE_NAME = "bordertech-tm-future-task";
+
+	private static final Duration FUTURE_TASK_CACHE_DURATION = new Duration(TimeUnit.SECONDS, Long.valueOf("300"));
 	private static final String TP_PARAM_PREFIX = "bordertech.taskmaster.pool.";
 	private static final int DEFAULT_MAX_THREADS = 20;
 	private static final int DEFAULT_QUEUE_LENGTH = 0;
@@ -23,18 +29,11 @@ public final class TaskMasterProperties {
 	}
 
 	/**
-	 * @return the future task cache name
-	 */
-	public static String getFutureTaskCacheName() {
-		return "bordertech-tm-future-task";
-	}
-
-	/**
 	 * @return the future task cache duration
 	 */
 	public static Duration getFutureTaskCacheDuration() {
-		Duration defaultDuration = new Duration(TimeUnit.SECONDS, Long.valueOf("300"));
-		return CachingProperties.getCacheDuration(getFutureTaskCacheName(), defaultDuration);
+		// Check for override
+		return CachingProperties.getCacheDuration(FUTURE_TASK_CACHE_NAME, FUTURE_TASK_CACHE_DURATION);
 	}
 
 	/**

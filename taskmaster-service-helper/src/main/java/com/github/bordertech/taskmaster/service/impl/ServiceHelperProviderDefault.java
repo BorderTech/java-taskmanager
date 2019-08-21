@@ -28,10 +28,9 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 
 	static {
 		if (IN_PROGRESS_ENABLED) {
-			String name = ServiceHelperProperties.getInProgressCacheName();
-			// Setup the cache for tracking in progress ASync Cached service calls
-			Duration duration = ServiceHelperProperties.getInProgressCacheDuration();
-			IN_PROGRESS_CACHE = CachingHelper.getOrCreateCache(name, String.class, Boolean.class, duration);
+			String cacheName = ServiceHelperProperties.INPROGRESS_CACHE_NAME;
+			Duration defaultDuration = ServiceHelperProperties.getInProgressCacheDuration();
+			IN_PROGRESS_CACHE = CachingHelper.getOrCreateCache(cacheName, String.class, Boolean.class, defaultDuration);
 		} else {
 			IN_PROGRESS_CACHE = null;
 		}
@@ -220,11 +219,10 @@ public class ServiceHelperProviderDefault implements ServiceHelperProvider {
 	}
 
 	/**
-	 * Flag if tracking in progress ASync cached service calls which helps avoid multiple calls for the same service
-	 * call.
+	 * Flag if tracking in progress ASync cached service calls which helps avoid multiple calls for the same service call.
 	 * <p>
-	 * It only makes sense to track cached ASync calls as cached results are expected to be called multiple times and
-	 * Sync calls require the result immediately anyway.
+	 * It only makes sense to track cached ASync calls as cached results are expected to be called multiple times and Sync calls require the result
+	 * immediately anyway.
 	 * </p>
 	 *
 	 * @return true if tracking in progress ASync cached service calls

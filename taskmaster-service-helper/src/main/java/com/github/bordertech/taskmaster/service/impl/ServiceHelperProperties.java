@@ -12,6 +12,19 @@ import org.apache.commons.configuration.Configuration;
 public final class ServiceHelperProperties {
 
 	/**
+	 * Default result holder cache name.
+	 */
+	public static final String RESULT_HOLDER_CACHE_NAME = "taskmaster-resultholder";
+
+	/**
+	 * In progress cache name.
+	 */
+	public static final String INPROGRESS_CACHE_NAME = "taskmaster-inprogress";
+
+	private static final Duration RESULT_HOLDER_CACHE_DURATION = new Duration(TimeUnit.SECONDS, Long.valueOf("1800"));
+	private static final Duration INPROGRESS_CACHE_DURATION = new Duration(TimeUnit.SECONDS, Long.valueOf("300"));
+
+	/**
 	 * Private constructor for static class.
 	 */
 	private ServiceHelperProperties() {
@@ -19,42 +32,19 @@ public final class ServiceHelperProperties {
 	}
 
 	/**
-	 * @return the default result holder cache name
-	 */
-	public static String getDefaultResultHolderCacheName() {
-		return "taskmaster-resultholder";
-	}
-
-	/**
 	 * @return the default result holder cache duration
 	 */
-	public static Duration getDefaultResultHolderCacheDuration() {
-		Duration defaultDuration = new Duration(TimeUnit.SECONDS, Long.valueOf("1800"));
-		return CachingProperties.getCacheDuration(getDefaultResultHolderCacheName(), defaultDuration);
-	}
-
-	/**
-	 * @param name the result holder cache name
-	 * @return the result holder cache duration
-	 */
-	public static Duration getResultHolderCacheDuration(final String name) {
-		Duration defaultDuration = getDefaultResultHolderCacheDuration();
-		return CachingProperties.getCacheDuration(name, defaultDuration);
-	}
-
-	/**
-	 * @return the in progress cache name
-	 */
-	public static String getInProgressCacheName() {
-		return "taskmaster-inprogress";
+	public static Duration getResultHolderCacheDuration() {
+		// Check for overrides
+		return CachingProperties.getCacheDuration(ServiceHelperProperties.RESULT_HOLDER_CACHE_NAME, RESULT_HOLDER_CACHE_DURATION);
 	}
 
 	/**
 	 * @return the in progress cache duration
 	 */
 	public static Duration getInProgressCacheDuration() {
-		Duration defaultDuration = new Duration(TimeUnit.SECONDS, Long.valueOf("300"));
-		return CachingProperties.getCacheDuration(getInProgressCacheName(), defaultDuration);
+		// Check for overrides
+		return CachingProperties.getCacheDuration(ServiceHelperProperties.INPROGRESS_CACHE_NAME, INPROGRESS_CACHE_DURATION);
 	}
 
 	/**

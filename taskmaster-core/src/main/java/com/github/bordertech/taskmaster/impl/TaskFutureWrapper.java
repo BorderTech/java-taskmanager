@@ -28,10 +28,8 @@ public class TaskFutureWrapper<T extends Serializable> implements TaskFuture<T> 
 	private final String id = UUID.randomUUID().toString();
 
 	static {
-		// Get future task cache name
-		String name = TaskMasterProperties.getFutureTaskCacheName();
 
-		// Get cache duration
+		String cacheName = TaskMasterProperties.FUTURE_TASK_CACHE_NAME;
 		Duration duration = TaskMasterProperties.getFutureTaskCacheDuration();
 
 		// Setup cache config
@@ -42,7 +40,7 @@ public class TaskFutureWrapper<T extends Serializable> implements TaskFuture<T> 
 		config.setStoreByValue(false);
 
 		// Create Cache
-		CACHE = CachingHelper.getOrCreateCache(name, String.class, Future.class, config);
+		CACHE = CachingHelper.getOrCreateCache(cacheName, String.class, Future.class, config);
 	}
 
 	/**
