@@ -16,7 +16,7 @@ public class CachingProviderListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent sce) {
-		CachingHelper.getProvider().closeCacheManager();
+		CachingHelper.closeCacheManager();
 	}
 
 }

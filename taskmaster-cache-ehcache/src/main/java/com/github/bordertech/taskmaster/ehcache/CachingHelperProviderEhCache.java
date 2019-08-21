@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.cache.Cache;
 import javax.inject.Singleton;
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.commons.logging.Log;
@@ -40,9 +39,8 @@ public class CachingHelperProviderEhCache extends CachingHelperProviderXmlConfig
 	}
 
 	@Override
-	protected synchronized <K, V> Cache<K, V> handleGetCache(final String name, final Class<K> keyClass,
-			final Class<V> valueClass) {
-		Cache<K, V> cache = super.handleGetCache(name, keyClass, valueClass);
+	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+		Cache<K, V> cache = super.getOrCreateCache(name, keyClass, valueClass);
 		if (!caches.containsKey(name)) {
 			configCachePropertyValues(name, cache);
 			caches.put(name, new ImmutableTriple(name, keyClass, valueClass));
@@ -90,13 +88,6 @@ public class CachingHelperProviderEhCache extends CachingHelperProviderXmlConfig
 	}
 
 	/**
-	 * @return the parameter configuration
-	 */
-	private Configuration getParams() {
-		return Config.getInstance();
-	}
-
-	/**
 	 * Get an integer cache property.
 	 *
 	 * @param name the cache name
@@ -105,7 +96,7 @@ public class CachingHelperProviderEhCache extends CachingHelperProviderXmlConfig
 	 */
 	private Integer getIntegerProperty(final String name, final String property) {
 		// Cache property then default
-		return getParams().getInteger(getKey(name, property), null);
+		return Config.getInstance().getInteger(getKey(name, property), null);
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package com.github.bordertech.taskmaster.cache.impl;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.cache.CachingHelperProvider;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,7 +26,7 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 
 	static {
 		// Load cache configfile location (default tm-cache.xml)
-		String config = Config.getInstance().getString("bordertech.taskmaster.cache.config", "/tm-cache.xml");
+		String config = CachingProperties.getConfigXmlLocation();
 		LOGGER.info("Loading cache config [" + config + "].");
 		URI uri;
 		try {
@@ -52,32 +51,23 @@ public class CachingHelperProviderXmlConfig implements CachingHelperProvider {
 	}
 
 	@Override
+	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass, final Class<V> valueClass) {
+		// Return the pre configured cache
+		return MANAGER.getCache(name, keyClass, valueClass);
+	}
+
+	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,
 			final Class<V> valueClass, final Duration duration) {
 		// Ignore duration
-		return handleGetCache(name, keyClass, valueClass);
+		return getOrCreateCache(name, keyClass, valueClass);
 	}
 
 	@Override
 	public synchronized <K, V> Cache<K, V> getOrCreateCache(final String name, final Class<K> keyClass,
 			final Class<V> valueClass, final Configuration<K, V> config) {
 		// Ignore config
-		return handleGetCache(name, keyClass, valueClass);
-	}
-
-	/**
-	 * Get the pre-configured cache.
-	 *
-	 * @param name the cache name
-	 * @param keyClass the cache key class
-	 * @param valueClass the cache entry class
-	 * @return the cache instance
-	 * @param <K> the cache key type
-	 * @param <V> the cache entry type
-	 */
-	protected synchronized <K, V> Cache<K, V> handleGetCache(final String name, final Class<K> keyClass,
-			final Class<V> valueClass) {
-		return MANAGER.getCache(name, keyClass, valueClass);
+		return getOrCreateCache(name, keyClass, valueClass);
 	}
 
 	/**

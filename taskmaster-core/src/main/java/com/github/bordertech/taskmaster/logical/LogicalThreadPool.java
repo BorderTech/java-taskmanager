@@ -1,6 +1,6 @@
 package com.github.bordertech.taskmaster.logical;
 
-import com.github.bordertech.config.Config;
+import com.github.bordertech.taskmaster.impl.TaskMasterProperties;
 import java.io.Serializable;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -15,9 +15,6 @@ import org.apache.commons.logging.LogFactory;
  * </p>
  */
 public class LogicalThreadPool implements Serializable {
-
-	private static final int DEFAULT_WAIT_INTERVAL_MILLISECONDS = Config.getInstance().getInt("bordertech.taskmaster.logicalthreadpool.wait.interval", 300);
-	private static final int DEFAULT_MAX_WAIT_INTERVALS = Config.getInstance().getInt("bordertech.taskmaster.logicalthreadpool.wait.max.intervals", 200);
 
 	private static final Log LOGGER = LogFactory.getLog(LogicalThreadPool.class);
 	private final String name;
@@ -134,7 +131,9 @@ public class LogicalThreadPool implements Serializable {
 	 * <p>
 	 */
 	public void waitAccess() {
-		waitAccess(DEFAULT_WAIT_INTERVAL_MILLISECONDS, DEFAULT_MAX_WAIT_INTERVALS);
+		int wait = TaskMasterProperties.getLogicalWaitInterval();
+		int maxIntervals = TaskMasterProperties.getLogicalMaxWaitIntervals();
+		waitAccess(wait, maxIntervals);
 	}
 
 	/**

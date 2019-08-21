@@ -3,6 +3,7 @@ package com.github.bordertech.taskmaster.impl;
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.TaskMasterProvider;
 import com.github.bordertech.taskmaster.exception.RejectedTaskException;
+import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
@@ -29,12 +30,12 @@ public class TaskMasterProviderExecutorService implements TaskMasterProvider {
 	}
 
 	@Override
-	public <T> TaskFuture<T> submit(final Runnable task, final T result) throws RejectedTaskException {
-		return submit(task, result, TaskMasterPoolUtil.DEFAULT_POOL);
+	public <T extends Serializable> TaskFuture<T> submit(final Runnable task, final T result) throws RejectedTaskException {
+		return submit(task, result, TaskMasterProperties.getDefaultThreadPoolName());
 	}
 
 	@Override
-	public <T> TaskFuture<T> submit(final Runnable task, final T result, final String pool) throws RejectedTaskException {
+	public <T extends Serializable> TaskFuture<T> submit(final Runnable task, final T result, final String pool) throws RejectedTaskException {
 		if (task == null) {
 			throw new IllegalArgumentException("Task cannot be null");
 		}

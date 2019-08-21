@@ -1,6 +1,5 @@
 package com.github.bordertech.taskmaster.impl;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.exception.TaskMasterException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,18 +21,15 @@ public final class TaskMasterPoolUtil {
 
 	private static final Log LOGGER = LogFactory.getLog(TaskMasterPoolUtil.class);
 	private static final Map<String, ExecutorService> THREAD_POOLS = new HashMap<>();
-	private static final String TP_PARAM_PREFIX = "bordertech.taskmaster.pool.";
-	private static final int DEFAULT_MAX_THREADS = 20;
-	private static final int DEFAULT_QUEUE_LENGTH = 0;
 
 	/**
 	 * Default thread pool name.
 	 */
-	public static final String DEFAULT_POOL = Config.getInstance().getString(TP_PARAM_PREFIX + "default", "default");
+	private static final String DEFAULT_POOL = TaskMasterProperties.getDefaultThreadPoolName();
 
 	static {
 		// Load thread pools
-		String[] pools = Config.getInstance().getStringArray(TaskMasterPoolUtil.TP_PARAM_PREFIX + "names");
+		String[] pools = TaskMasterProperties.getThreadPools();
 		for (String pool : pools) {
 			THREAD_POOLS.put(pool, TaskMasterPoolUtil.buildPool(pool));
 		}
@@ -61,18 +57,15 @@ public final class TaskMasterPoolUtil {
 		// http://www.nurkiewicz.com/2014/11/executorservice-10-tips-and-tricks.html
 
 		// Get the pool type - defaults to cached
-		String type = Config.getInstance().getString(TP_PARAM_PREFIX + pool + ".type", "cached");
+		String type = TaskMasterProperties.getThreadPoolType(pool);
 		switch (type.toLowerCase()) {
 			case "single":
 				return Executors.newSingleThreadExecutor();
 			case "fixed":
 				// Number of fixed threads
-				int max = Config.getInstance().getInt(TP_PARAM_PREFIX + pool + ".max", DEFAULT_MAX_THREADS);
-				if (max < 1) {
-					max = DEFAULT_MAX_THREADS;
-				}
+				int max = TaskMasterProperties.getPoolMaxThreads(pool);
 				// Length of pending queue
-				int queue = Config.getInstance().getInt(TP_PARAM_PREFIX + pool + ".queue", DEFAULT_QUEUE_LENGTH);
+				int queue = TaskMasterProperties.getPoolPendingQueueLength(pool);
 				// Create executable with the appropriate queue type
 				BlockingQueue<Runnable> blkQueue;
 				if (queue < 0) {

@@ -1,6 +1,7 @@
 package com.github.bordertech.taskmaster;
 
 import com.github.bordertech.taskmaster.exception.RejectedTaskException;
+import java.io.Serializable;
 
 /**
  * TaskMasterProvider helps projects run ASYNC tasks.
@@ -11,19 +12,19 @@ import com.github.bordertech.taskmaster.exception.RejectedTaskException;
 public interface TaskMasterProvider {
 
 	/**
-	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be
-	 * accepted. Invocation has no additional effect if already shut down.
+	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be accepted. Invocation has no additional
+	 * effect if already shut down.
 	 *
-	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
-	 * threads that the caller is not permitted to modify because it does not hold permission
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate threads that the caller is not
+	 * permitted to modify because it does not hold permission
 	 */
 	void shutdown();
 
 	/**
 	 * Attempts to stop all actively executing tasks, halts the processing of waiting tasks.
 	 *
-	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
-	 * threads that the caller is not permitted to modify because it does not hold permission
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate threads that the caller is not
+	 * permitted to modify because it does not hold permission
 	 */
 	void shutdownNow();
 
@@ -40,7 +41,7 @@ public interface TaskMasterProvider {
 	 * @return a Future representing pending completion of the task
 	 * @throws RejectedTaskException if the task cannot be scheduled for execution
 	 */
-	<T> TaskFuture<T> submit(final Runnable task, final T result) throws RejectedTaskException;
+	<T extends Serializable> TaskFuture<T> submit(Runnable task, T result) throws RejectedTaskException;
 
 	/**
 	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
@@ -53,6 +54,6 @@ public interface TaskMasterProvider {
 	 * @return a Future representing pending completion of the task
 	 * @throws RejectedTaskException if the task cannot be scheduled for execution
 	 */
-	<T> TaskFuture<T> submit(final Runnable task, final T result, final String pool) throws RejectedTaskException;
+	<T extends Serializable> TaskFuture<T> submit(Runnable task, T result, String pool) throws RejectedTaskException;
 
 }

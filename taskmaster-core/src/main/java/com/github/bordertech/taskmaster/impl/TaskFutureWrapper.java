@@ -1,9 +1,9 @@
 package com.github.bordertech.taskmaster.impl;
 
-import com.github.bordertech.config.Config;
 import com.github.bordertech.taskmaster.TaskFuture;
 import com.github.bordertech.taskmaster.cache.CachingHelper;
 import com.github.bordertech.taskmaster.exception.TaskMasterException;
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -21,25 +21,26 @@ import javax.cache.expiry.Duration;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class TaskFutureWrapper<T> implements TaskFuture<T> {
+public class TaskFutureWrapper<T extends Serializable> implements TaskFuture<T> {
 
 	private static final Cache<String, Future> CACHE;
 
 	private final String id = UUID.randomUUID().toString();
 
 	static {
-		// Get default duration
-		Long duration = Config.getInstance().getLong("bordertech.taskmaster.future.cache.duration", Long.valueOf("300"));
+
+		String cacheName = TaskMasterProperties.FUTURE_TASK_CACHE_NAME;
+		Duration duration = TaskMasterProperties.getFutureTaskCacheDuration();
 
 		// Setup cache config
 		MutableConfiguration<String, Future> config = new MutableConfiguration<>();
 		config.setTypes(String.class, Future.class);
-		config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.SECONDS, duration)));
+		config.setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(duration));
 		// No need to serialize the result (Future is not serializable)
 		config.setStoreByValue(false);
 
 		// Create Cache
-		CACHE = CachingHelper.getProvider().getOrCreateCache("bordertech-tm-future-task", String.class, Future.class, config);
+		CACHE = CachingHelper.getOrCreateCache(cacheName, String.class, Future.class, config);
 	}
 
 	/**
