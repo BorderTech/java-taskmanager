@@ -12,24 +12,24 @@ import java.io.Serializable;
 public interface TaskMasterProvider {
 
 	/**
-	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be accepted. Invocation has no additional
-	 * effect if already shut down.
+	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be
+	 * accepted. Invocation has no additional effect if already shut down.
 	 *
-	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate threads that the caller is not
-	 * permitted to modify because it does not hold permission
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
+	 * threads that the caller is not permitted to modify because it does not hold permission
 	 */
 	void shutdown();
 
 	/**
 	 * Attempts to stop all actively executing tasks, halts the processing of waiting tasks.
 	 *
-	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate threads that the caller is not
-	 * permitted to modify because it does not hold permission
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
+	 * threads that the caller is not permitted to modify because it does not hold permission
 	 */
 	void shutdownNow();
 
 	/**
-	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
+	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <code>get</code>
 	 * method will return the given result upon successful completion.
 	 * <p>
 	 * Uses the default thread pool.
@@ -44,7 +44,7 @@ public interface TaskMasterProvider {
 	<T extends Serializable> TaskFuture<T> submit(Runnable task, T result) throws RejectedTaskException;
 
 	/**
-	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
+	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <code>get</code>
 	 * method will return the given result upon successful completion.
 	 *
 	 * @param <T> the type for the future

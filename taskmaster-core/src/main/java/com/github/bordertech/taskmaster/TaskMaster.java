@@ -9,14 +9,15 @@ import java.io.Serializable;
  * TaskMaster helps projects run ASYNC tasks.
  *
  * <p>
- * TaskMaster allows a Runnable task to be submitted for execution and returns a Future representing that task. The Future's get method will return
- * the given result upon successful completion.
+ * TaskMaster allows a Runnable task to be submitted for execution and returns a Future representing that task. The
+ * Future's get method will return the given result upon successful completion.
  * </p>
  * <p>
- * As Web applications require a Future implementation that can be serializable, the TaskMaster has a custom interface TaskFuture that implements both
- * Future and Serializable. It does not make sense for a Future to be Serializable as it is running on a specific thread on a particular server. To
- * allow a Web Application to keep a reference to the Future, the default implementation of TaskFuture (ie TaskFutureWrapper) wraps the future by
- * putting the Future on a cache and holding onto the cache key that is serializable.
+ * As Web applications require a Future implementation that can be serializable, the TaskMaster has a custom interface
+ * TaskFuture that implements both Future and Serializable. It does not make sense for a Future to be Serializable as it
+ * is running on a specific thread on a particular server. To allow a Web Application to keep a reference to the Future,
+ * the default implementation of TaskFuture (ie TaskFutureWrapper) wraps the future by putting the Future on a cache and
+ * holding onto the cache key that is serializable.
  * </p>
  *
  * @author Jonathan Austin
@@ -40,11 +41,11 @@ public final class TaskMaster {
 	}
 
 	/**
-	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be accepted. Invocation has no additional
-	 * effect if already shut down.
+	 * Initiates an orderly shutdown in which previously submitted tasks are executed, but no new tasks will be
+	 * accepted. Invocation has no additional effect if already shut down.
 	 *
-	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate threads that the caller is not
-	 * permitted to modify because it does not hold permission
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
+	 * threads that the caller is not permitted to modify because it does not hold permission
 	 */
 	public static void shutdown() {
 		PROVIDER.shutdown();
@@ -53,15 +54,15 @@ public final class TaskMaster {
 	/**
 	 * Attempts to stop all actively executing tasks, halts the processing of waiting tasks.
 	 *
-	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate threads that the caller is not
-	 * permitted to modify because it does not hold permission
+	 * @throws SecurityException if a security manager exists and shutting down this ExecutorService may manipulate
+	 * threads that the caller is not permitted to modify because it does not hold permission
 	 */
 	public static void shutdownNow() {
 		PROVIDER.shutdownNow();
 	}
 
 	/**
-	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
+	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <code>get</code>
 	 * method will return the given result upon successful completion.
 	 * <p>
 	 * Uses the default thread pool.
@@ -78,7 +79,7 @@ public final class TaskMaster {
 	}
 
 	/**
-	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <tt>get</tt>
+	 * Submits a Runnable task for execution and returns a Future representing that task. The Future's <code>get</code>
 	 * method will return the given result upon successful completion.
 	 *
 	 * @param <T> the type for the future

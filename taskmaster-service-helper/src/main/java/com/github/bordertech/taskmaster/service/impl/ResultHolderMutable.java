@@ -16,7 +16,11 @@ public final class ResultHolderMutable<M extends Serializable, T extends Seriali
 	private T result;
 	private Exception exception;
 
+	/**
+	 * Default constructor.
+	 */
 	public ResultHolderMutable() {
+		// Do nothing
 	}
 
 	/**
