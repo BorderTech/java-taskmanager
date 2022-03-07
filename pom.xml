@@ -38,8 +38,8 @@
 	</issueManagement>
 
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.com/BorderTech/java-taskmaster</url>
+		<system>Github Actions</system>
+		<url>https://github.com/BorderTech/java-taskmaster/actions</url>
 	</ciManagement>
 
 	<dependencyManagement>

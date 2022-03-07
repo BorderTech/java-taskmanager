@@ -1,7 +1,9 @@
 # Change log
 
 ## Release in-progress
+
 * Latest qa-parent
+* Switch from travis-ci to GitHub Actions #45
 
 ## 2.0.0-beta-1
 
