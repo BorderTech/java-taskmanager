@@ -47,6 +47,20 @@
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<scope>provided</scope>
+			<exclusions>
+				<!-- Causes issue with convergence check. ehcache started using a range for the version since 3.9.1 and is only needed if running on Java 11 -->
+				<exclusion>
+					<groupId>org.glassfish.jaxb</groupId>
+					<artifactId>jaxb-runtime</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Used by ehcache -->
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>3.0.2</version>
+			<scope>runtime</scope>
 		</dependency>
 
 	</dependencies>
