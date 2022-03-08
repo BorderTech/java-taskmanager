@@ -4,6 +4,7 @@
 
 * Latest qa-parent
 * Switch from travis-ci to GitHub Actions #45
+* Latest dependencies
 
 ## 2.0.0-beta-1
 
