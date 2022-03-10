@@ -2,7 +2,7 @@
 Task Master helps run ASYNC tasks.
 
 ## Status
-[![Build Status](https://travis-ci.com/BorderTech/java-taskmaster.svg?branch=master)](https://travis-ci.com/BorderTech/java-taskmaster)
+[![Build Status](https://github.com/BorderTech/java-taskmaster/actions/workflows/github-actions-build.yml/badge.svg)](https://github.com/BorderTech/java-taskmaster/actions/workflows/github-actions-build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bordertech-java-taskmaster&metric=alert_status)](https://sonarcloud.io/dashboard?id=bordertech-java-taskmaster)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=bordertech-java-taskmaster&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=bordertech-java-taskmaster)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bordertech-java-taskmaster&metric=coverage)](https://sonarcloud.io/dashboard?id=bordertech-java-taskmaster)

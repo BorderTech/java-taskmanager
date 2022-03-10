@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.github.bordertech.common</groupId>
 		<artifactId>qa-parent</artifactId>
-		<version>1.0.15</version>
+		<version>1.0.19</version>
 	</parent>
 
 	<packaging>pom</packaging>
@@ -38,8 +38,8 @@
 	</issueManagement>
 
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.com/BorderTech/java-taskmaster</url>
+		<system>Github Actions</system>
+		<url>https://github.com/BorderTech/java-taskmaster/actions</url>
 	</ciManagement>
 
 	<dependencyManagement>
@@ -49,7 +49,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
 				<artifactId>didums-core</artifactId>
-				<version>1.0.4</version>
+				<version>1.0.5</version>
 			</dependency>
 
 			<!-- Injection interface. JSR 330 -->
@@ -63,14 +63,14 @@
 			<dependency>
 				<groupId>com.github.bordertech.config</groupId>
 				<artifactId>config</artifactId>
-				<version>1.0.5</version>
+				<version>1.0.8</version>
 			</dependency>
 
 			<!-- SLF4J Logging -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.26</version>
+				<version>1.7.36</version>
 			</dependency>
 
 			<!-- Commons Logging -->
@@ -90,22 +90,22 @@
 			<!-- Servlet Interface -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.5</version>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>3.1.0</version>
 			</dependency>
 
 			<!-- ehcache -->
 			<dependency>
 				<groupId>org.ehcache</groupId>
 				<artifactId>ehcache</artifactId>
-				<version>3.8.0</version>
+				<version>3.9.9</version>
 			</dependency>
 
 			<!-- Common Lang3 -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.9</version>
+				<version>3.12.0</version>
 			</dependency>
 
 		</dependencies>
