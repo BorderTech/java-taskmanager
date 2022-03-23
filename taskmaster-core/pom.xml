@@ -33,13 +33,6 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<!-- TaskMaster Servlet Tools -->
-		<dependency>
-			<groupId>com.github.bordertech.taskmaster</groupId>
-			<artifactId>taskmaster-servlet-tools</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<!-- Didums Injection -->
 		<dependency>
 			<groupId>com.github.bordertech.didums</groupId>
