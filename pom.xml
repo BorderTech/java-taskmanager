@@ -116,7 +116,6 @@
 		<module>taskmaster-cache-ehcache</module>
 		<module>taskmaster-core</module>
 		<module>taskmaster-service-helper</module>
-		<module>taskmaster-servlet-tools</module>
 	</modules>
 
 </project>

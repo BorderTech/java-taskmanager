@@ -5,6 +5,7 @@
 * Latest qa-parent
 * Switch from travis-ci to GitHub Actions #45
 * Latest dependencies
+* Extract taskmaster-servlet-tools into its own repo java-servlet-tools. Projects using servlet-tools will need to add the new dependency as it is no longer provided by taskmaster-core #47
 
 ## 2.0.0-beta-1
 
