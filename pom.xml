@@ -45,6 +45,13 @@
 	<dependencyManagement>
 		<dependencies>
 
+			<!-- Cache Helper -->
+			<dependency>
+				<groupId>com.github.bordertech.taskmaster</groupId>
+				<artifactId>cache-helper</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
 			<!-- Didums Injection -->
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
@@ -80,25 +87,11 @@
 				<version>1.2</version>
 			</dependency>
 
-			<!-- Caching API. -->
-			<dependency>
-				<groupId>javax.cache</groupId>
-				<artifactId>cache-api</artifactId>
-				<version>1.1.1</version>
-			</dependency>
-
 			<!-- Servlet Interface -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.1.0</version>
-			</dependency>
-
-			<!-- ehcache -->
-			<dependency>
-				<groupId>org.ehcache</groupId>
-				<artifactId>ehcache</artifactId>
-				<version>3.9.9</version>
 			</dependency>
 
 			<!-- Common Lang3 -->
@@ -112,8 +105,6 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>taskmaster-cache-helper</module>
-		<module>taskmaster-cache-ehcache</module>
 		<module>taskmaster-core</module>
 		<module>taskmaster-service-helper</module>
 	</modules>

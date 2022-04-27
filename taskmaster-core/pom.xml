@@ -26,11 +26,10 @@
 
 	<dependencies>
 
-		<!-- TaskMaster Cache Helper -->
+		<!-- Cache Helper -->
 		<dependency>
 			<groupId>com.github.bordertech.taskmaster</groupId>
-			<artifactId>taskmaster-cache-helper</artifactId>
-			<version>${project.version}</version>
+			<artifactId>cache-helper</artifactId>
 		</dependency>
 
 		<!-- Didums Injection -->
