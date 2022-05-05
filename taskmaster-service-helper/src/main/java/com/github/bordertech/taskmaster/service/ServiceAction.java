@@ -10,7 +10,8 @@ import java.io.Serializable;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public interface ServiceAction<S extends Serializable, T extends Serializable> {
+@FunctionalInterface
+public interface ServiceAction<S extends Serializable, T extends Serializable> extends Serializable {
 
 	/**
 	 * Invoke service call.
